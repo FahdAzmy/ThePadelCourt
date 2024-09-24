@@ -1,26 +1,29 @@
-const { promise } = require("bcrypt/promises");
-const {MongoClient} =require("mongodb")
-//
- 
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
-class productMong {
-    constructor(){
-        this.mongoClient = MongoClient;
-        this.url="mongodb://localhost:27017/pop"
-    }
-    async connectt(){
-        const client =await this.mongoClient.connect(this.url );
-        
-        return client.db();
-    }
-    async insertProduct(object){
-        const db =await this.connectt();
-        db.collection("port").insertOne((object) ,function(err,data){
-            if(err){
-                console.log(err);
-            }
-            console.log(data);
-        })
-    }
-}
-module.exports.productMong=productMong;
+const ConnectToDb = require("./db/ConeectedToDb");
+
+const app = express();
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173", // استبدل بهذا العنوان إذا كان مختلفاً
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+const Port = process.env.PORT || 3000;
+// Other middleware
+app.use(cookieParser());
+app.use(express.json());
+
+//Routes
+
+//error Handler
+
+// Connect To DB
+app.listen(Port, () => {
+  ConnectToDb();
+  console.log("Server Listening on Port", Port);
+});
