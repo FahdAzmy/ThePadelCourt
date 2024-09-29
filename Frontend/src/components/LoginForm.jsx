@@ -1,6 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { User, Key, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ModernLoginForm = () => {
   const [email, setEmail] = useState("");
@@ -64,9 +66,9 @@ const ModernLoginForm = () => {
         <div className="mt-8 text-center">
           <p className="text-white text-opacity-80">
             Don't have an account?{" "}
-            <a href="/register" className="font-bold hover:underline">
+            <Link to="/register" className="font-bold hover:underline">
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </motion.div>
