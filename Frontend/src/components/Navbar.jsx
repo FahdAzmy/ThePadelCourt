@@ -7,10 +7,10 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white p-4">
+    <nav className="bg-transparent p-4  fixed top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Right side (PadelCourt) */}
-        <div className="text-3xl md:text-4xl font-extrabold text-green-600">
+        <div className="text-3xl md:text-4xl  font-extrabold text-green-600">
           PadelCourt
         </div>
 
@@ -41,25 +41,25 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Link
             to="/"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
           >
             Home
           </Link>
           <Link
             to="/courts"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
           >
             Courts
           </Link>
           <Link
             to="/about"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
           >
             About
           </Link>
           <Link
             to="/contact"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
           >
             Contact Us
           </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-4">
           {isLoggedIn ? (
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-600 transition duration-300"
+              className="bg-red-600 text-white px-4 py-2 rounded-sm shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
               onClick={() => setIsLoggedIn(false)}
             >
               Logout
@@ -78,13 +78,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-blue-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-600 transition duration-300"
+                className="bg-gradient-to-r font-bold bg-rose-900 text-white px-4 py-2  rounded-lg shadow-lg hover:from-lime-900 hover:to-blue-900 transition duration-300 transform hover:scale-105"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-green-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-green-600 transition duration-300"
+                className="bg-gradient-to-r font-bold bg-sky-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-sky-600 transition duration-300 transform hover:scale-105"
               >
                 Signup
               </Link>
