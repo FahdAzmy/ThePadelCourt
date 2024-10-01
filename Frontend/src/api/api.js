@@ -16,3 +16,18 @@ export const Login = async (userData) => {
     throw error;
   }
 };
+// Sign Up User
+export const Signup = async (userData) => {
+  try {
+    const response = await axios.post(`${API_URL}/signup`, userData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error  Signup User",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};

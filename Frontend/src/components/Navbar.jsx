@@ -41,25 +41,25 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Link
             to="/"
-            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
           >
             Home
           </Link>
           <Link
             to="/courts"
-            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
           >
             Courts
           </Link>
           <Link
             to="/about"
-            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
           >
             About
           </Link>
           <Link
             to="/contact"
-            className="text-black-700 text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
           >
             Contact Us
           </Link>

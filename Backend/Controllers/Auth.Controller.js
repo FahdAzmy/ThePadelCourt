@@ -15,7 +15,7 @@ exports.Signup = asynHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password)
     return next(new appError("All Fields are required", 404));
-  const emailExist = User.findOne({ email });
+  const emailExist = await User.findOne({ email });
   if (emailExist) return next(new appError("User already Exist", 400));
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   const user = await User.create({
