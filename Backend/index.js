@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
+const courtRoutes = require("./routes/Courts.Route");
 const ConnectToDb = require("./db/ConeectedToDb");
 const {
   NotFoundRoutes,
@@ -22,6 +23,7 @@ app.use(express.json());
 
 //Routes
 app.use("/api", authRoutes);
+app.use("/api", courtRoutes);
 
 //error Handler
 app.use(NotFoundRoutes);

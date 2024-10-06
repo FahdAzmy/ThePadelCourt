@@ -27,6 +27,10 @@ const padelCourtSchema = new mongoose.Schema(
       ref: "User", // Reference to User model for the court owner
       required: true,
     },
+    courtImg: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true, // Automatically manages createdAt and updatedAt fields

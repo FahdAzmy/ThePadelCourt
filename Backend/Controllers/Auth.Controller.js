@@ -38,7 +38,7 @@ exports.Login = asynHandler(async (req, res, next) => {
   if (!user) return next(new appError("Invalid Email Or Password", 404));
   const isPassword = await bcrypt.compare(password, user.password);
   if (!isPassword) return next(new appError("Invalid Email Or Password"));
-  generateToeknAndSetCookie(res, user._id);
+  generateToeknAndSetCookie(res, user);
   res.status(200).json({ message: "Login Successfully", user });
 });
 // User Logout

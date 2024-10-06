@@ -1,0 +1,77 @@
+[
+  {
+    "name": "UPadel",
+    "location": "Nozha Street, Heliopolis, Cairo",
+    "availability": [
+      {
+        "date": "2024-10-06",
+        "timeSlots": [{ "start": "10:00", "end": "12:00" }]
+      }
+    ],
+    "pricePerHour": 500,
+
+    "courtImg": "https://upadel.com/court1.jpg",
+    "createdAt": "2024-10-06T08:50:12.123Z",
+    "updatedAt": "2024-10-06T08:50:12.123Z"
+  },
+  {
+    "name": "SR Padel",
+    "location": "Club 7, Maadi, Cairo",
+    "availability": [
+      {
+        "date": "2024-10-06",
+        "timeSlots": [{ "start": "12:00", "end": "14:00" }]
+      }
+    ],
+    "pricePerHour": 450,
+
+    "courtImg": "https://srpadel.com/court2.jpg",
+    "createdAt": "2024-10-06T08:50:12.123Z",
+    "updatedAt": "2024-10-06T08:50:12.123Z"
+  },
+  {
+    "name": "Go! Padel",
+    "location": "Shooting Club, Dokki, Cairo",
+    "availability": [
+      {
+        "date": "2024-10-06",
+        "timeSlots": [{ "start": "14:00", "end": "16:00" }]
+      }
+    ],
+    "pricePerHour": 550,
+
+    "courtImg": "https://gopadel.com/court3.jpg",
+    "createdAt": "2024-10-06T08:50:12.123Z",
+    "updatedAt": "2024-10-06T08:50:12.123Z"
+  },
+  {
+    "name": "Padel House",
+    "location": "Beverly Hills, 6th October City",
+    "availability": [
+      {
+        "date": "2024-10-06",
+        "timeSlots": [{ "start": "16:00", "end": "18:00" }]
+      }
+    ],
+    "pricePerHour": 600,
+
+    "courtImg": "https://padelhouse.com/court4.jpg",
+    "createdAt": "2024-10-06T08:50:12.123Z",
+    "updatedAt": "2024-10-06T08:50:12.123Z"
+  },
+  {
+    "name": "Padel One",
+    "location": "Mokattam, Cairo",
+    "availability": [
+      {
+        "date": "2024-10-06",
+        "timeSlots": [{ "start": "18:00", "end": "20:00" }]
+      }
+    ],
+    "pricePerHour": 480,
+
+    "courtImg": "https://padelone.com/court5.jpg",
+    "createdAt": "2024-10-06T08:50:12.123Z",
+    "updatedAt": "2024-10-06T08:50:12.123Z"
+  }
+]

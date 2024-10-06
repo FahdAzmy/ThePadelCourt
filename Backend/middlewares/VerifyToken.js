@@ -12,12 +12,7 @@ exports.verifeyToken = (req, res, next) => {
     return next(new AppError("Invalid Token", error));
   }
 };
-exports.isAdmin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") next();
-  else {
-    return next(new AppError("access Denied: Admins Only", 404));
-  }
-};
+
 // Middleware to check if the user is an admin
 exports.isAdminOrOwner = (req, res, next) => {
   // Check if the user's role is admin or owner
