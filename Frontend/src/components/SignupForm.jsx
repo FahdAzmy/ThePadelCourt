@@ -55,7 +55,7 @@ const SignUpForm = () => {
           Register
         </h2>
         <Formik
-          initialValues={{ name: "", email: "", password: "" }}
+          initialValues={{ name: "", email: "", password: "", role: "" }}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting }) => {
             handleSubmit(values);
@@ -115,7 +115,19 @@ const SignUpForm = () => {
                   className="error font-bold text-white"
                 />
               </div>
+              <div className="text-white  flex gap-2  items-center mb-4 font-bold">
+                <label>
+                  <Field type="radio" name="role" value="owner" />
+                  Owner
+                </label>
+                <label>
+                  <Field type="radio" name="role" value="user" />
+                  User
+                </label>
+              </div>
+
               {/* Server Error Message */}
+
               {serverError && (
                 <p className="text-white mb-4 font-bold text-md mt-4">
                   {serverError}

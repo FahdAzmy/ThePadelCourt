@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="bg-transparent p-4  fixed top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Right side (PadelCourt) */}
-        <div className="text-3xl md:text-4xl  font-extrabold text-green-600">
+        <div className="text-3xl md:text-4xl  font-extrabold text-lime-500">
           PadelCourt
         </div>
 
@@ -41,25 +41,25 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <Link
             to="/"
-            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
           >
             Home
           </Link>
           <Link
             to="/courts"
-            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
           >
             Courts
           </Link>
           <Link
             to="/about"
-            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
           >
             About
           </Link>
           <Link
             to="/contact"
-            className="text-white text-base font-bold hover:text-green-600 transition duration-300"
+            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
           >
             Contact Us
           </Link>
