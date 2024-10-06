@@ -18,3 +18,12 @@ exports.isAdmin = (req, res, next) => {
     return next(new AppError("access Denied: Admins Only", 404));
   }
 };
+// Middleware to check if the user is an admin
+exports.isAdminOrOwner = (req, res, next) => {
+  // Check if the user's role is admin or owner
+  if (req.user && (req.user.role === "admin" || req.user.role === "owner")) {
+    return next(); // Proceed to the next middleware or route handler
+  } else {
+    return next(new AppError("Access Denied: Admins or Owners Only", 403)); // Forbidden for others
+  }
+};
