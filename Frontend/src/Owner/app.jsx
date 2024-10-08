@@ -1,7 +1,6 @@
 
 
 const Appp=({product,setEtit,openEdit,openRemove ,setProductidx,idx})=> {
-
     const Edit =()=>{
         setEtit(product);
         setProductidx(idx)
@@ -12,6 +11,7 @@ const Appp=({product,setEtit,openEdit,openRemove ,setProductidx,idx})=> {
     const dele=()=>{
         setEtit(product);
         openRemove();
+        setProductidx(idx)
 
     }
  return(
@@ -27,7 +27,7 @@ const Appp=({product,setEtit,openEdit,openRemove ,setProductidx,idx})=> {
     </p><br/>
    
     <div className="flex items-center space-x-1"> 
-        <span className="pl-3 w-20 h-8 bg-red-600 text-white rounded-md cursor-pointer  hover:bg-red-500">{product.time}</span>
+        <span className="pl-2 w-14 h-7 bg-black text-white rounded-md cursor-pointer  hover:bg-slate-600">{product.time}</span>
 
 
     </div>

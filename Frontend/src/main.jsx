@@ -6,7 +6,7 @@ import "./index.css";
 
 import ErrorPage from "./pages/ErrorPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import Owner from "./Companat/owner.jsx";
+import Owner from "./Owner/owner.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 const router = createBrowserRouter([
   {

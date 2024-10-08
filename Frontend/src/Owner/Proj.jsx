@@ -1,13 +1,13 @@
 import Formlist from "./formlist";
 import MyModal from "./modul"
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import ErrorMsg from "./ErrorMsg"
 import Valid from "./validation"
-import List from "./list";
 import Appp from "./app"
 import toast, { Toaster } from "react-hot-toast";
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import Page from "./ownerPage"
+import axios from "axios";
 const Proj =()=>{
 
     const obj ={
@@ -16,17 +16,20 @@ const Proj =()=>{
        ImgeUrl: "",
         Price : "",
         time :""
+
       }
- 
+
+      //   ************* Show   ****************//
+      const [starge,setStorge] =useState([])
+
+      //   ************* updata   ****************//
+      const [updataa ,setUpdataa]=useState([])
 
        //   ************* Product idx ****************//
       const [productidx ,setProductidx] =useState(0);
 
-       //   ************* Add product ****************//
-      const [addproduct,setAddproduct] =useState(List);
-
        //   ************* delete product ****************//
-      const [deleproduct,setDeleproduct] =useState(List);
+       const [deletedd ,setDeletedd] =useState([])
 
        //   ************* loop Product value ****************//
       const [edit ,setEtit]=useState(obj)
@@ -85,6 +88,45 @@ const Proj =()=>{
       return{...old ,[e.target.name] :e.target.value}
     })
     }
+    //   *************    Api delete ****************//
+
+    const delee =async()=>{
+      console.log(productidx);
+      const dele =await axios.delete(`http://localhost:3012/ownerpage/${productidx}`)
+      setDeletedd(dele.data)
+
+    }
+
+    //   *************    Api updata ****************//
+
+    const updata =async(productidx,edit)=>{
+      const put =await axios.patch(`http://localhost:3012/ownerpage/${productidx}`,edit)
+      setUpdataa(put.data);
+
+    }
+     //   *************    Api Show ****************//
+
+    const replay =async()=>{
+      const store =await axios.get("http://localhost:3012/ownerpage")
+
+      setStorge(store.data)
+
+
+    } 
+    useEffect(()=>{
+      replay();
+    },[replay])
+     //   *************    Api add ****************//
+        const addd =async()=>{
+          const respose =await axios.post("http://localhost:3012/ownerpage",stata)
+    
+          const [apipost ,setApipost] = useState(respose.data)
+    
+          setApipost((old)=>{
+            return[...old ,stata]
+          })
+        }
+
     //   ************* handeler of insert inputs****************//
     const handler =function (e){
         setStats((old)=>{
@@ -111,7 +153,8 @@ const Proj =()=>{
         };
 
     //   *************submit of insert product ****************//
-    const onsubmitt=(e)=>{
+    
+    const  onsubmitt= (e)=>{
         e.preventDefault();
         
         const errors =Valid(stata);
@@ -128,33 +171,19 @@ const Proj =()=>{
         }
         
         onclose()
-      
-        setAddproduct((old)=>{
+        addd();
+       
+        //setAddproduct((old)=>{
           //console.log(old);
-          return[...old,stata]; }
-        )
+         //return[...old,stata]; }
+        //)
 
       }
-
-      //   *************Remove the product from List ****************//
-
-      const onsubmitRemove=(e)=>{
-        closeRemove();
-        const filterd = addproduct.filter((product)=>product.id !== edit.id)
-        setAddproduct(filterd);
-        toast('your Studium deleded', {
-          duration: 4000,
-          position: 'top-center',
-          style: {backgroundColor:"black" ,color:"white"}
-      
-        })
-        
-      
-      }
-
-
+    
     //   *************submit of Product in the List  ****************//
 
+    
+    
       const onsubmit=(e)=>{
         e.preventDefault();
         
@@ -166,17 +195,28 @@ const Proj =()=>{
            return ;
         }
         closeEdit();
-        setAddproduct((old)=>{
-          return[...old,stata];
-          
-        })
-        
-        
-        const Updatedproducts = [...addproduct]
-        Updatedproducts[productidx] =edit;
-        setAddproduct(Updatedproducts)
+
+        updata(productidx,edit);
+
         
     }
+
+  //   *************Remove the product from List ****************//
+
+    const onsubmitRemove=(e)=>{
+      closeRemove();
+      delee()      
+
+      //const filterd = addproduct.filter((product)=>product.id !== edit.id)
+      //setAddproduct(filterd);
+      toast('your Studium deleded', {
+        duration: 4000,
+        position: 'top-center',
+        style: {backgroundColor:"black" ,color:"white"}
+    
+      })
+    }
+    console.log();
      //   *************maping of input Edits ****************//
 
       const formlistlistEdit =Formlist.map(input =>(
@@ -203,16 +243,17 @@ const Proj =()=>{
       ));
       
       //   *************maping of the product in the List  ****************//
+     
 
-      const products =addproduct.map((product, idx )=><Appp key={idx} openRemove={openRemove}  idx={idx}  setProductidx={setProductidx} product={product} setEtit={setEtit} openEdit={openEdit} /> )
+      const products =starge.map((product, idx )=><Appp key={idx} openRemove={openRemove}  idx={product._id}  setProductidx={setProductidx} product={product} setEtit={setEtit} openEdit={openEdit} /> )
 
 
-    return<>
+    return ( <>
 
         <Page/><br/>
 
         <div className="text-center">
-        <MyModal stata={stata} edit={edit} handerTime={handerTime} formlistlist ={formlistlist} open={open} isOpen={isOpen} close={close} onclose={onclose} onsubmitt={onsubmitt} />
+        <MyModal stata={stata} edit={edit} handerTime={handerTime} formlistlist ={formlistlist} open={open}  isOpen={isOpen} close={close} onclose={onclose} onsubmitt={onsubmitt} />
 
 
         </div><br/>
@@ -240,7 +281,8 @@ const Proj =()=>{
                 {formlistlistEdit}
                 <label>Time</label>
                 <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="time" value={edit[edit.time]} onChange={handerTime} />
-                  {console.log(edit.time)}
+                  {//console.log(edit.time)} 
+                                            }
               </DialogTitle  >
 
               <div className="flex items-center my-3 space-x-2 ">
@@ -311,6 +353,6 @@ const Proj =()=>{
       </div>}
       <Toaster/>
       </div>
-    </>
+    </>)
 }
 export default Proj ;
