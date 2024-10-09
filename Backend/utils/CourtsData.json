@@ -9,7 +9,6 @@
       }
     ],
     "pricePerHour": 500,
-
     "courtImg": "https://upadel.com/court1.jpg",
     "createdAt": "2024-10-06T08:50:12.123Z",
     "updatedAt": "2024-10-06T08:50:12.123Z"
@@ -24,7 +23,6 @@
       }
     ],
     "pricePerHour": 450,
-
     "courtImg": "https://srpadel.com/court2.jpg",
     "createdAt": "2024-10-06T08:50:12.123Z",
     "updatedAt": "2024-10-06T08:50:12.123Z"
@@ -39,7 +37,6 @@
       }
     ],
     "pricePerHour": 550,
-
     "courtImg": "https://gopadel.com/court3.jpg",
     "createdAt": "2024-10-06T08:50:12.123Z",
     "updatedAt": "2024-10-06T08:50:12.123Z"
@@ -54,7 +51,6 @@
       }
     ],
     "pricePerHour": 600,
-
     "courtImg": "https://padelhouse.com/court4.jpg",
     "createdAt": "2024-10-06T08:50:12.123Z",
     "updatedAt": "2024-10-06T08:50:12.123Z"
@@ -69,7 +65,6 @@
       }
     ],
     "pricePerHour": 480,
-
     "courtImg": "https://padelone.com/court5.jpg",
     "createdAt": "2024-10-06T08:50:12.123Z",
     "updatedAt": "2024-10-06T08:50:12.123Z"

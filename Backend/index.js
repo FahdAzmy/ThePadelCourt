@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const courtRoutes = require("./routes/Courts.Route");
+const bookingRoutes = require("./routes/Booking.Route");
 const ConnectToDb = require("./db/ConeectedToDb");
 const {
   NotFoundRoutes,
@@ -24,6 +25,7 @@ app.use(express.json());
 //Routes
 app.use("/api", authRoutes);
 app.use("/api", courtRoutes);
+app.use("/api", bookingRoutes);
 
 //error Handler
 app.use(NotFoundRoutes);

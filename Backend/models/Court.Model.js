@@ -1,30 +1,53 @@
 const mongoose = require("mongoose");
 
-// Create a schema for Padel Court
 const padelCourtSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-      trim: true, // Removes leading/trailing whitespace
+      trim: true,
     },
     location: {
       type: String,
       required: true,
       trim: true,
     },
-    availability: {
-      type: [{ date: Date, timeSlots: [{ start: String, end: String }] }], // Array of availability objects
-      required: true,
+    operatingHours: {
+      start: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 23,
+      },
+      end: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 23,
+      },
     },
+    availability: [
+      {
+        date: {
+          type: Date,
+          required: true,
+        },
+        timeSlots: [
+          {
+            start: String,
+            end: String,
+          },
+        ],
+      },
+    ],
     pricePerHour: {
       type: Number,
       required: true,
-      min: 0, // Ensures price is not negative
+      min: 0,
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to User model for the court owner
+      ref: "User",
       required: true,
     },
     courtImg: {
@@ -33,11 +56,11 @@ const padelCourtSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Automatically manages createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
-// Create a model from the schema
-const PadelCourt = mongoose.model("court", padelCourtSchema);
+// إنشاء الموديل
+const PadelCourt = mongoose.model("PadelCourt", padelCourtSchema);
 
 module.exports = PadelCourt;
