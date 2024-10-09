@@ -21,6 +21,7 @@ app.use(
 // Other middleware
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/api", authRoutes);
