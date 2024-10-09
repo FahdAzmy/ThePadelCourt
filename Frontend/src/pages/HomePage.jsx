@@ -47,6 +47,7 @@ export default function Home() {
         <TestMonialsSection />
         {/* Contact Section */}
         <ContectSection />
+        <Footer />
       </div>
     </>
   );
