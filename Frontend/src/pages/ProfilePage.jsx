@@ -1,27 +1,23 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useOutlet } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserSidebar from "../components/UserProfile/UserSidebar";
-// import "./ProfilePage.css";
 
 function ProfilePage() {
-  const location = useLocation();
+  const outlet = useOutlet();
 
   return (
     <div className=" h-screen">
-      {/* <div className="hero">
-        <div className="container justify-content-center">
-          <h1 className="text-white fw-bold fs-1">My Profile</h1>
-        </div>
-      </div> */}
-      <div className="container-fluid p-0  my-5 ">
-        <div className="row justify-content-center g-4 items-center">
-          <div className="col-12 col-sm-4 col-md-3 col-lg-3 px-2">
-            <UserSidebar className="border rounded" />
+      <div className="container-fluid py-5  my-5">
+        <div className="row my-4 mx-2 py-4 px-2 g-4">
+          <div className="col-12 col-sm-4 col-md-3 col-lg-3 px-2 ">
+            <UserSidebar className="border rounded"/>
           </div>
-          <div className="col-12 col-sm-8 col-md-7 col-lg-8 border rounded h-100 p-4 ">
-            <Outlet />
-          </div>
+          {outlet && (
+            <div className="col-12 col-sm-8 col-md-7 col-lg-8 mx-4 border rounded h-100 p-4">
+              <Outlet />
+            </div>
+          )}
         </div>
       </div>
     </div>
