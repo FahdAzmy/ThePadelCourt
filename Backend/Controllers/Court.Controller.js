@@ -1,6 +1,7 @@
 const asyncHandler = require("../middlewares/AsyncHandler");
 const appError = require("../utils/AppError");
 const Court = require("../models/Court.Model");
+const { UploadPhotoToCloud } = require("../middlewares/UploadToCloudaniry");
 // Generate Defualt Date's
 function generateTimeSlots(startHour, endHour) {
   // Check if startHour and endHour are defined
@@ -47,12 +48,15 @@ exports.CreateCourt = asyncHandler(async (req, res, next) => {
     startHour,
     endHour,
     pricePerHour,
-    courtImg,
     daysInAdvance = 30,
   } = req.body;
   const ownerId = req.user.userId;
   const courtIsExist = await Court.findOne({ name });
   if (courtIsExist) return next(new appError("This Court is Exist", 404));
+  let courtImg = null;
+  if (req.file) {
+    courtImg = await UploadPhotoToCloud(req.file); // استدعاء فانكشن رفع الصورة
+  }
   const availability = [];
   const startDate = new Date();
   startDate.setHours(0, 0, 0, 0);

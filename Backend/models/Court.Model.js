@@ -51,7 +51,7 @@ const padelCourtSchema = new mongoose.Schema(
       required: true,
     },
     courtImg: {
-      type: String,
+      type: Object,
       required: true,
     },
   },
