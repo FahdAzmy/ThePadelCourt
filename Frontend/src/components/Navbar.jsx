@@ -1,11 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { AuthContext } from "../Contexts/AuthContext";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   // Simulate user authentication status
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
+  // Handle user logout: remove token cookie, update authentication state, and navigate to login page
+  function handleLogout() {
+    Cookies.remove("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  }
   return (
     <nav className="bg-transparent p-4  fixed top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
@@ -69,8 +78,8 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-4">
           {isLoggedIn ? (
             <button
-              className="bg-red-600 text-white px-4 py-2 rounded-sm shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
-              onClick={() => setIsLoggedIn(false)}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
+              onClick={() => handleLogout()}
             >
               Logout
             </button>

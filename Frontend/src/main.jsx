@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -10,6 +9,8 @@ import Owner from "./Owner/owner.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import Home from "./pages/HomePage.jsx";
 import CourtPage from "./components/CourtPage/CourtPage.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         element: <RegisterPage />,
       },
       {
-        path: "courts", 
+        path: "courts",
         element: <CourtPage />,
       },
     ],
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </StrictMode>
+  </AuthProvider>
 );

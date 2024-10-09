@@ -5,9 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../api/api.js";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../Contexts/AuthContext.jsx";
 const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState(null); // State to handle error messages
+  const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -21,10 +23,10 @@ const LoginForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await Login(values);
+      await Login(values);
+      setIsLoggedIn(true);
       setErrorMessage(null); // Clear any error messages
       navigate("/", { replace: true });
-      console.log("Login Successful", response);
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setErrorMessage(error.response.data.Message);
