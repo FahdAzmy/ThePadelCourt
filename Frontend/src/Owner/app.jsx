@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const Appp=({product,setEtit,openEdit,openRemove ,setProductidx,idx})=> {
@@ -25,12 +27,18 @@ const Appp=({product,setEtit,openEdit,openRemove ,setProductidx,idx})=> {
     </div>
     <p className="opacity-40"> {product.Discription} 
     </p><br/>
-   
+
+    <div className="text-xl">
+    <FontAwesomeIcon icon={faMapMarkerAlt} size="1x" style={{ color: 'black' }} />
+
+    {product.Location}
+    </div><br/>
     <div className="flex items-center space-x-1"> 
         <span className="pl-2 w-14 h-7 bg-black text-white rounded-md cursor-pointer  hover:bg-slate-600">{product.time}</span>
-
+        <span className="pl-2 w-14 h-7 bg-black text-white rounded-md cursor-pointer  hover:bg-slate-600">{product.Totime}</span>
 
     </div>
+   
     <p className="text-blue-600">
         ${product.Price}
         

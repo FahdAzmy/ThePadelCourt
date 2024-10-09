@@ -9,12 +9,16 @@ const schema= new Schema({
         type :String,
         required:true
     },
+    Location:{
+        type :String,
+        required:true
+    }, 
     Price:{
         type :String,
         required:true
     },
     Discription:{
-        
+
         type :String,
         required:true
     },
@@ -22,6 +26,10 @@ const schema= new Schema({
         type :String,
         required:true
     },
+    Totime:{
+        type :String,
+        required:true
+    }
 })
 const OwnerModul = model("owner" ,schema)
 module.exports = OwnerModul ;

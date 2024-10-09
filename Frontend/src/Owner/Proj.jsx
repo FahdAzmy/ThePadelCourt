@@ -14,8 +14,10 @@ const Proj =()=>{
        NameOfStadium : "",
        Discription: "",
        ImgeUrl: "",
-        Price : "",
-        time :""
+       Price : "",
+       time :"",
+       Totime:"",
+       Location :""
 
       }
 
@@ -33,6 +35,7 @@ const Proj =()=>{
 
        //   ************* loop Product value ****************//
       const [edit ,setEtit]=useState(obj)
+      console.log(edit);
 
       //   ************* put inputs value ****************//
       const[stataa ,setStatass]=useState(obj);
@@ -83,11 +86,17 @@ const Proj =()=>{
     //   ************* make span vaild under every input ****************//
     const [msgg ,setMsgg] =useState(obj);
     //   ************* handeler for Time****************//
-    const handerTime=(e)=>{
-      setStats((old)=>{
-      return{...old ,[e.target.name] :e.target.value}
-    })
-    }
+    
+    //   *************    Api add ****************//
+     const [apipost ,setApipost] = useState([])
+     const addd =async()=>{
+
+       const respose =await axios.post("http://localhost:3012/ownerpage",stata)
+       console.log(respose.data);
+       setApipost((old)=>{
+         return[...old ,respose.data]
+       })
+     }
     //   *************    Api delete ****************//
 
     const delee =async()=>{
@@ -106,7 +115,7 @@ const Proj =()=>{
     }
      //   *************    Api Show ****************//
 
-    const replay =async()=>{
+    const replay = async()=>{
       const store =await axios.get("http://localhost:3012/ownerpage")
 
       setStorge(store.data)
@@ -115,18 +124,8 @@ const Proj =()=>{
     } 
     useEffect(()=>{
       replay();
-    },[replay])
-     //   *************    Api add ****************//
-        const addd =async()=>{
-          const respose =await axios.post("http://localhost:3012/ownerpage",stata)
-    
-          const [apipost ,setApipost] = useState(respose.data)
-    
-          setApipost((old)=>{
-            return[...old ,stata]
-          })
-        }
-
+    },[starge])
+     
     //   ************* handeler of insert inputs****************//
     const handler =function (e){
         setStats((old)=>{
@@ -151,9 +150,19 @@ const Proj =()=>{
           })
           
         };
+    //   ************* handeler of Time****************//
 
-    //   *************submit of insert product ****************//
-    
+        const handerTime=(e)=>{
+          setStats((old)=>{
+          return{...old ,[e.target.name] :e.target.value}
+         
+        })
+        setEtit((old)=>{
+          return{...old ,[e.target.name]:e.target.value}
+        })
+        }
+
+     //   *************submit of insert product ****************//
     const  onsubmitt= (e)=>{
         e.preventDefault();
         
@@ -280,9 +289,11 @@ const Proj =()=>{
               <DialogTitle className="space-y-1 ">
                 {formlistlistEdit}
                 <label>Time</label>
-                <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="time" value={edit[edit.time]} onChange={handerTime} />
+                <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="time" value={edit["time"]} onChange={handerTime} />
                   {//console.log(edit.time)} 
                                             }
+             <label>Totime</label>
+             <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="Totime" value={edit["Totime"]} onChange={handerTime} />
               </DialogTitle  >
 
               <div className="flex items-center my-3 space-x-2 ">

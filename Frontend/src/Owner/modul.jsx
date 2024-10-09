@@ -25,7 +25,10 @@ return(
                 {formlistlist}
                 <label>Time</label>
                 <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="time" value={edit[stata.time]} onChange={handerTime} />
-               
+                <label>Totime</label>
+
+                <input className='w-full rounded-md h-11 p-3 border-2 shadow-md 'type ="time" name="Totime" value={edit[stata.time]} onChange={handerTime} />
+
 
               </DialogTitle  >
 

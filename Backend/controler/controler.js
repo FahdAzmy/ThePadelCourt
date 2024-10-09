@@ -1,16 +1,16 @@
 const {  Mongoose, default: mongoose } = require("mongoose");
 const OwnerModul = require("../modul/modul");
 
- 
+
  
  exports.ownerPost=async (req ,res)=>{
     try{
-    const {ImgeUrl ,NameOfStadium ,Price,Discription, time}= req.body;
-    if(!ImgeUrl || !NameOfStadium || !Price || !Discription || ! time){
+    const {ImgeUrl ,NameOfStadium ,Price,Discription, time ,Totime ,Location}= req.body;
+    if(!ImgeUrl || !NameOfStadium || !Price || !Discription || ! time || !Totime || !Location){
      return  res.status(400).json({msg:"pls full all requierment"})
     }
     
-    const owner=  await  OwnerModul.create({ImgeUrl ,NameOfStadium ,Price,Discription, time})
+    const owner=  await  OwnerModul.create({ImgeUrl ,NameOfStadium ,Price,Discription,Location,Totime,time})
     res.status(201).json({msg :"done"})}
     catch (error){
         res.status(500).json({err :error.massage})
