@@ -63,7 +63,7 @@ export default function ChangePassword() {
           <input
             type="password"
             className="form-control"
-            id="password"
+            id="oldpassword"
             name="password"
             value={oldPasswordInput}
             onChange={handleOldPasswordChange}
