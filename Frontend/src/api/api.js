@@ -43,3 +43,12 @@ export const getCourts = async () => {
     throw error;
   }
 };
+
+// Get User Profile
+export const getUserProfile = async () => {
+  return await axios.get("/api/profile"); // Adjust the endpoint to match your API
+};
+
+export const updateUserProfile = async (data) => {
+  return await axios.put("/api/profile", data); // Adjust the endpoint to match your API
+};

@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -11,6 +12,11 @@ import Home from "./pages/HomePage.jsx";
 import CourtPage from "./components/CourtPage/CourtPage.jsx";
 import { AuthProvider } from "./Contexts/AuthContext.jsx";
 
+import OwnerPage from "./pages/OwnerPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import AccountSettings from "./components/UserProfile/AccountSettings.jsx";
+import ChangePassword from "./components/UserProfile/ChangePassword.jsx";
+import YourReservations from "./components/UserProfile/YourReservations.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +34,7 @@ const router = createBrowserRouter([
       {
         path: "ownerpage",
         element: <Owner />,
+        element: <OwnerPage />,
       },
       {
         path: "/register",
@@ -36,6 +43,22 @@ const router = createBrowserRouter([
       {
         path: "courts",
         element: <CourtPage />,
+        path: "profile",
+        element: <ProfilePage />,
+        children: [
+          {
+            path: "accountsettings",
+            element: <AccountSettings />,
+          },
+          {
+            path: "changepassword",
+            element: <ChangePassword />,
+          },
+          {
+            path: "reservations",
+            element: <YourReservations />,
+          },
+        ],
       },
     ],
   },
