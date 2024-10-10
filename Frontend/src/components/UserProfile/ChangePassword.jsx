@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function ChangePassword() {
   const [oldPasswordInput, setOldPasswordInput] = useState("");
@@ -53,46 +52,57 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="container-fluid py-3">
-      <h1 className="text-center mb-4">Change Password</h1>
-      <form className="row g-3 justify-content-center" onSubmit={handleSubmit}>
-        <div className="col-12 col-md-6">
-          <label htmlFor="oldpass" className="form-label">
-            Old Password <span className="text-danger">*</span>
+    <div className="max-w-md mx-auto py-6">
+      <h1 className="text-2xl text-center mb-4 font-semibold">
+        Change Password
+      </h1>
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
+          <label
+            htmlFor="oldpassword"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Old Password <span className="text-red-500">*</span>
           </label>
           <input
             type="password"
-            className="form-control"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
             id="oldpassword"
-            name="password"
             value={oldPasswordInput}
             onChange={handleOldPasswordChange}
+            required
           />
         </div>
-        <div className="col-12 col-md-6">
-          <label htmlFor="newpass" className="form-label">
-            New Password <span className="text-danger">*</span>
+        <div>
+          <label
+            htmlFor="newpassword"
+            className="block text-sm font-medium text-gray-700"
+          >
+            New Password <span className="text-red-500">*</span>
           </label>
           <input
             type="password"
-            className="form-control"
-            id="password"
-            name="password"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
+            id="newpassword"
             value={newPasswordInput}
             onChange={handleNewPasswordChange}
+            required
           />
         </div>
         {errorMessage && (
-          <div className="col-12 text-center mt-2">
-            <span className="text-danger">{errorMessage}</span>
+          <div className="text-center mt-2">
+            <span className="text-red-500">{errorMessage}</span>
           </div>
         )}
+        <div className="text-center">
+          <button
+            type="submit"
+            className="w-full mt-4 bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
+          >
+            Save Changes
+          </button>
+        </div>
       </form>
-      <div className="col-12 text-center mt-4">
-        <button type="submit" className="btn btn-primary">
-          Save Changes
-        </button>
-      </div>
     </div>
   );
 }

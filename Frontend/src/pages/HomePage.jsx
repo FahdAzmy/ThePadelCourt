@@ -24,7 +24,7 @@ export default function Home() {
       <div className="relative">
         {/* Background Image */}
         <img
-          src="/Court.png"
+          src="/PadelGallery.png"
           alt="Padel Court"
           className="w-full h-[800px] object-cover"
         />

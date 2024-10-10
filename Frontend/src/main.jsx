@@ -33,8 +33,8 @@ const router = createBrowserRouter([
       },
       {
         path: "ownerpage",
+
         element: <Owner />,
-        element: <OwnerPage />,
       },
       {
         path: "/register",
@@ -43,6 +43,8 @@ const router = createBrowserRouter([
       {
         path: "courts",
         element: <CourtPage />,
+      },
+      {
         path: "profile",
         element: <ProfilePage />,
         children: [

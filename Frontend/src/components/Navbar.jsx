@@ -61,16 +61,10 @@ const Navbar = () => {
             Courts
           </Link>
           <Link
-            to="/about"
+            to="/profile"
             className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
           >
-            About
-          </Link>
-          <Link
-            to="/contact"
-            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
-          >
-            Contact Us
+            Profile
           </Link>
         </div>
 
@@ -112,17 +106,12 @@ const Navbar = () => {
             Courts
           </Link>
           <Link
-            to="/about"
+            to="/profile"
             className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
           >
-            About
+            Profile
           </Link>
-          <Link
-            to="/contact"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
-          >
-            Contact Us
-          </Link>
+
           {isLoggedIn ? (
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-600 transition duration-300"
