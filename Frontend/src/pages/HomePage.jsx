@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import ContectSection from "../components/Home/ContectSection";
 import MainSection from "../components/Home/MainSection";
 import TestMonialsSection from "../components/Home/TestMonialsSection";
-import Footer from "../components/Home/Footer";
 
 export default function Home() {
   const [text, setText] = useState("");

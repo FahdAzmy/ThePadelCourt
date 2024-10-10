@@ -9,7 +9,7 @@ import Owner from "./Owner/owner.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import Home from "./pages/HomePage.jsx";
 import CourtPage from "./components/CourtPage/CourtPage.jsx";
-import { AuthProvider } from "./contexts/AuthContext.jsx";
+import { AuthProvider } from "./Contexts/AuthContext.jsx";
 
 const router = createBrowserRouter([
   {

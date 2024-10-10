@@ -31,3 +31,15 @@ export const Signup = async (userData) => {
     throw error;
   }
 };
+export const getCourts = async () => {
+  try {
+    const respone = await axios.get(`${API_URL}/getcourts`);
+    return respone.data;
+  } catch (error) {
+    console.error(
+      "Error  Signup User",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};

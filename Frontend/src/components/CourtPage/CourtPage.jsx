@@ -1,32 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock } from "react-icons/fa";
-import courtsData from "./courts.json";
+import { getCourts } from "../../api/api";
 
 const CourtPage = () => {
   const [searchZone, setSearchZone] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchTime, setSearchTime] = useState("");
-  const [filteredCourts, setFilteredCourts] = useState(courtsData);
+  const [filteredCourts, setFilteredCourts] = useState([]);
+  const [allCourts, setAllCourts] = useState([]);
 
-  const zones = Array.from(new Set(courtsData.map((court) => court.zone)));
+  const zones = Array.from(new Set(allCourts.map((court) => court.location)));
+
+  const timeSlots = Array.from(
+    new Set(
+      allCourts.flatMap((court) =>
+        court.availability.flatMap((slot) =>
+          slot.timeSlots.map((timeSlot) => timeSlot.start)
+        )
+      )
+    )
+  );
+
+  useEffect(() => {
+    const fetchCourts = async () => {
+      try {
+        const data = await getCourts();
+        setAllCourts(data.courts);
+        setFilteredCourts(data.courts);
+      } catch (error) {
+        console.error("Error Fetching Courts:", error);
+      }
+    };
+    fetchCourts();
+  }, []);
 
   const handleSearch = () => {
     setFilteredCourts(
-      courtsData.filter((court) => {
-        const isZoneMatch = court.zone
+      allCourts.filter((court) => {
+        const isZoneMatch = court.location
           .toLowerCase()
           .includes(searchZone.toLowerCase());
-        const isTimeMatch = court.availableTimes.some(
-          (time) => time === searchTime
+
+        const isTimeMatch = court.availability.some((availability) =>
+          availability.timeSlots.some(
+            (timeSlot) => timeSlot.start === searchTime
+          )
         );
 
-        // Convert court.date from mm/dd/yyyy to yyyy-mm-dd for comparison
-        const [month, day, year] = court.date.split("/");
-        const formattedCourtDate = `${year}-${month}-${day}`; 
-
-        const isDateMatch = searchDate
-          ? formattedCourtDate === searchDate
-          : true; // Check if the date matches
+        // مقارنة التاريخ
+        const isDateMatch = court.availability.some(
+          (availability) =>
+            new Date(availability.date).toLocaleDateString() ===
+            new Date(searchDate).toLocaleDateString()
+        );
 
         return (
           (searchZone ? isZoneMatch : true) &&
@@ -77,9 +103,7 @@ const CourtPage = () => {
             onKeyDown={handleKeyDown}
           >
             <option value="">Select Time</option>
-            {Array.from(
-              new Set(courtsData.flatMap((court) => court.availableTimes))
-            ).map((time, index) => (
+            {timeSlots.map((time, index) => (
               <option key={index} value={time}>
                 {time}
               </option>
@@ -96,42 +120,51 @@ const CourtPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourts.map((court, index) => (
-          <div
-            key={index}
-            className="border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white"
-          >
-            <img
-              src={court.image}
-              alt={court.name}
-              className="w-full h-48 object-cover transition duration-300 ease-in-out hover:scale-105"
-            />
-            <div className="p-4">
-              <h2 className="text-2xl font-semibold mb-2">{court.name}</h2>
-              <div className="flex items-center mb-1">
-                <FaMapMarkerAlt className="text-lime-500 mr-2" />
-                <p className="text-gray-700 text-sm">{`${court.zone}, ${court.location}`}</p>
-              </div>
-              <p className="text-gray-600 mb-2">{court.description}</p>
-              <p className="text-gray-600 mb-2">Date: {court.date}</p>
-              <div className="flex items-center mb-3">
-                <FaClock className="text-lime-500 mr-2" />
-                <p className="text-gray-700 text-sm">
-                  Open: {court.availableTimes.join(", ")}
+        {filteredCourts.length > 0 ? (
+          filteredCourts.map((court) => (
+            <div
+              key={court._id}
+              className="border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white"
+            >
+              <img
+                src={court.courtImg.url}
+                alt={court.name}
+                className="w-full h-48 object-cover transition duration-300 ease-in-out hover:scale-105"
+              />
+              <div className="p-4">
+                <h2 className="text-2xl font-semibold mb-2">{court.name}</h2>
+                <div className="flex items-center mb-1">
+                  <FaMapMarkerAlt className="text-lime-500 mr-2" />
+                  <p className="text-gray-700 text-sm">{`${court.location}`}</p>
+                </div>
+                <p className="text-gray-600 mb-2">
+                  Date:{" "}
+                  {new Date(court.availability[0].date).toLocaleDateString()}
                 </p>
+                <div className="flex items-center mb-3">
+                  <FaClock className="text-lime-500 mr-2" />
+                  <p className="text-gray-700 text-sm">
+                    Open: {court.operatingHours.start}:00 AM To{" "}
+                    {court.operatingHours.end}:00 PM
+                  </p>
+                </div>
+                <button
+                  className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center font-semibold"
+                  onClick={() =>
+                    alert(
+                      `Booking ${court.name} at ${court.availability[0].timeSlots[0].start}`
+                    )
+                  }
+                >
+                  <FaCalendarAlt className="mr-2" />
+                  Book Now
+                </button>
               </div>
-              <button
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center font-semibold"
-                onClick={() =>
-                  alert(`Booking ${court.name} at ${court.availableTimes[0]}`)
-                }
-              >
-                <FaCalendarAlt className="mr-2" />
-                Book Now
-              </button>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No Courts</p>
+        )}
       </div>
     </div>
   );
