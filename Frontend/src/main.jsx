@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -12,7 +11,6 @@ import Home from "./pages/HomePage.jsx";
 import CourtPage from "./components/CourtPage/CourtPage.jsx";
 import { AuthProvider } from "./Contexts/AuthContext.jsx";
 
-import OwnerPage from "./pages/OwnerPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import AccountSettings from "./components/UserProfile/AccountSettings.jsx";
 import ChangePassword from "./components/UserProfile/ChangePassword.jsx";

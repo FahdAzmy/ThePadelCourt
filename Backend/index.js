@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const courtRoutes = require("./routes/Courts.Route");
 const bookingRoutes = require("./routes/Booking.Route");
+const route = require("./Routs/Rout.js");
 const ConnectToDb = require("./db/ConeectedToDb");
 const {
   NotFoundRoutes,
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", authRoutes);
 app.use("/api", courtRoutes);
 app.use("/api", bookingRoutes);
+app.use("/api", route);
 
 //error Handler
 app.use(NotFoundRoutes);
