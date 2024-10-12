@@ -39,20 +39,20 @@ exports.ownerPut=async(req,res)=>{
             new :true,
          
             runValidators : true,
-
+    
             });
         if(!patch){
             return res.status(404).json({msg :"error"})
         }
-    res.json(patch)
+    res.json(patch) 
     console.log(patch);
-
+ 
 }
     
-
+   
 exports.ownerDelete=async(req,res)=>{
-
-    const {id} =req.params ;
+ 
+    const {id} =req.params ;   
 
     if(!mongoose.Types.ObjectId.isValid(id)){
 
@@ -70,5 +70,13 @@ exports.ownerDelete=async(req,res)=>{
 
     }
     }
-    
+ 
 }
+exports.book=async(req,res)=>{
+    const {id} =req.params;
+    const book =await OwnerModul.findById(id);
+
+    res.json(book)
+    console.log(book);
+
+}  

@@ -15,6 +15,8 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import AccountSettings from "./components/UserProfile/AccountSettings.jsx";
 import ChangePassword from "./components/UserProfile/ChangePassword.jsx";
 import YourReservations from "./components/UserProfile/YourReservations.jsx";
+import Book from "./components/Home/Booking.jsx";
+import Bookk from "./components/Home/bookk.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "courts",
         element: <CourtPage />,
+      },
+      {
+        path: "book",
+        element: <Bookk />,
       },
       {
         path: "profile",

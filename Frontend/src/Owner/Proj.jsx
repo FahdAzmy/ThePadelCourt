@@ -1,5 +1,4 @@
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
 import Formlist from "./formlist";
 import MyModal from "./modul"
 import {  useEffect, useState } from 'react';
@@ -10,6 +9,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import Page from "./ownerPage"
 import axios from "axios";
+const API_URL = import.meta.env.VITE_APP_API_URL;
+
 const Proj =()=>{
 
     const obj ={
@@ -126,7 +127,7 @@ const Proj =()=>{
     } 
     useEffect(()=>{
       replay();
-    },[starge])
+    },[])
      
     //   ************* handeler of insert inputs****************//
     const handler =function (e){

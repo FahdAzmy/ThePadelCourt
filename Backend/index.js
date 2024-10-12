@@ -33,10 +33,10 @@ app.use("/api", route);
 //error Handler
 app.use(NotFoundRoutes);
 app.use(GlobalErrorHandler);
-
-// Connect To DB
+ 
+// Connect To DB 
 const Port = process.env.PORT || 3000;
 app.listen(Port, () => {
-  ConnectToDb();
+  ConnectToDb(); 
   console.log("Server Listening on Port", Port);
 });
