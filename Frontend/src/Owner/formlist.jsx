@@ -12,9 +12,13 @@ const Formlist =[
         id : "3",
         lable :"ImgeUrl",
     },
-
     {
         id : "4",
+        lable :"Location",
+    },
+
+    {
+        id : "5",
         lable :"Price",
     }
 ];

@@ -10,115 +10,192 @@ import Page from "./ownerPage";
 import axios from "axios";
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
-const Proj = () => {
-  const obj = {
-    NameOfStadium: "",
-    Discription: "",
-    ImgeUrl: "",
-    Price: "",
-    time: "",
-  };
+const obj = {
+  NameOfStadium: "",
+  Discription: "",
+  ImgeUrl: "",
+  Price: "",
+  time: "",
+  Totime: "",
+  Location: "",
+};
 
-  //   ************* Show   ****************//
-  const [starge, setStorge] = useState([]);
+//   ************* Show   ****************//
+const [starge, setStorge] = useState([]);
 
-  //   ************* updata   ****************//
-  const [updataa, setUpdataa] = useState([]);
+//   ************* updata   ****************//
+const [updataa, setUpdataa] = useState([]);
 
-  //   ************* Product idx ****************//
-  const [productidx, setProductidx] = useState(0);
+//   ************* Product idx ****************//
+const [productidx, setProductidx] = useState(0);
 
-  //   ************* delete product ****************//
-  const [deletedd, setDeletedd] = useState([]);
+//   ************* delete product ****************//
+const [deletedd, setDeletedd] = useState([]);
 
-  //   ************* loop Product value ****************//
-  const [edit, setEtit] = useState(obj);
+//   ************* loop Product value ****************//
 
-  //   ************* put inputs value ****************//
-  const [stataa, setStatass] = useState(obj);
+//   ************* loop Product value ****************//
+const [edit, setEtit] = useState(obj);
+console.log(edit);
 
-  const [stata, setStats] = useState(obj);
-  //   ************* open & close modul ****************//
-  const [isOpen, setIsOpen] = useState(false);
-  function open() {
-    setIsOpen(true);
+const [stata, setStats] = useState(obj);
+//   ************* open & close modul ****************//
+const [isOpen, setIsOpen] = useState(false);
+function open() {
+  setIsOpen(true);
+}
+function close() {
+  setIsOpen(false);
+}
+const onclose = () => {
+  setStats(obj);
+  close();
+  setMsgg(obj);
+};
+//   *************Button close Edit****************//
+const [isOpenEditmModul, setIsOpenEditmModul] = useState(false);
+function openEdit() {
+  setIsOpenEditmModul(true);
+}
+function closeEdit() {
+  setIsOpenEditmModul(false);
+}
+const oncloseEdit = () => {
+  setStats(obj);
+  closeEdit();
+};
+
+//   *************Button close Remove****************//
+
+const [isOpenRemovemModul, setIsOpenremovemModul] = useState(false);
+function openRemove() {
+  setIsOpenremovemModul(true);
+}
+function closeRemove() {
+  setIsOpenremovemModul(false);
+}
+const oncloseRemove = () => {
+  closeRemove();
+};
+
+//   ************* make span vaild under every input ****************//
+const [msgg, setMsgg] = useState(obj);
+//   ************* handeler for Time****************//
+
+//   *************    Api add ****************//
+// const [apipost, setApipost] = useState([]);
+// const addd = async () => {
+//   const respose = await axios.post("http://localhost:3012/ownerpage", stata);
+//   console.log(respose.data);
+//   setApipost((old) => {
+//     return [...old, respose.data];
+//   });
+// };
+//   *************    Api delete ****************//
+
+const delee = async () => {
+  console.log(productidx);
+  const dele = await axios.delete(`${API_URL}/ownerpage/${productidx}`);
+  setDeletedd(dele.data);
+};
+
+//   *************    Api updata ****************//
+
+const updata = async (productidx, edit) => {
+  const put = await axios.patch(`${API_URL}/ownerpage/${productidx}`, edit);
+  setUpdataa(put.data);
+};
+//   *************    Api Show ****************//
+
+const replay = async () => {
+  const store = await axios.get(`${API_URL}/ownerpage`);
+
+  setStorge(store.data);
+};
+useEffect(() => {
+  replay();
+}, [replay]);
+//   *************    Api add ****************//
+const addd = async () => {
+  const respose = await axios.post(`${API_URL}/ownerpage`, stata);
+
+  const [apipost, setApipost] = useState(respose.data);
+
+  setApipost((old) => {
+    return [...old, stata];
+  });
+};
+
+//   ************* handeler of insert inputs****************//
+const handler = function (e) {
+  setStats((old) => {
+    return { ...old, [e.target.name]: e.target.value };
+  });
+};
+
+//   ************* handeler of Edit inputs****************//
+let handlerEdit = function (e) {
+  setEtit((old) => {
+    return { ...old, [e.target.name]: e.target.value };
+  });
+  setStatass((old) => {
+    return { ...old, [e.target.name]: e.target.value };
+  });
+  setMsgg((old) => {
+    return { ...old, [e.target.name]: "" };
+  });
+};
+
+//   *************submit of insert product ****************//
+
+const onsubmitt = (e) => {
+  e.preventDefault();
+
+  const errors = Valid(stata);
+  //console.log(errors);
+
+  //console.log(errors.errors);
+  const haserror =
+    Object.values(errors.errors).some((value) => value === "") &&
+    Object.values(errors.errors).every((value) => value === "");
+  console.log(haserror);
+  if (!haserror) {
+    setMsgg(errors);
+    return;
   }
-  function close() {
-    setIsOpen(false);
+
+  onclose();
+  addd();
+
+  //setAddproduct((old)=>{
+  //console.log(old);
+  //return[...old,stata]; }
+  //)
+};
+
+//   *************submit of Product in the List  ****************//
+
+const onsubmit = (e) => {
+  e.preventDefault();
+
+  const errors = Valid(stata);
+  const haserror =
+    Object.values(errors.errors).some((value) => value === "") &&
+    Object.values(errors.errors).every((value) => value === "");
+  if (haserror) {
+    setMsgg(errors);
+    return;
   }
-  const onclose = () => {
-    setStats(obj);
-    close();
-    setMsgg(obj);
-  };
-  //   *************Button close Edit****************//
-  const [isOpenEditmModul, setIsOpenEditmModul] = useState(false);
-  function openEdit() {
-    setIsOpenEditmModul(true);
-  }
-  function closeEdit() {
-    setIsOpenEditmModul(false);
-  }
-  const oncloseEdit = () => {
-    setStats(obj);
-    closeEdit();
-  };
-
-  //   *************Button close Remove****************//
-
-  const [isOpenRemovemModul, setIsOpenremovemModul] = useState(false);
-  function openRemove() {
-    setIsOpenremovemModul(true);
-  }
-  function closeRemove() {
-    setIsOpenremovemModul(false);
-  }
-  const oncloseRemove = () => {
-    closeRemove();
-  };
-
-  //   ************* make span vaild under every input ****************//
-  const [msgg, setMsgg] = useState(obj);
-  //   ************* handeler for Time****************//
-  const handerTime = (e) => {
-    setStats((old) => {
-      return { ...old, [e.target.name]: e.target.value };
-    });
-  };
-  //   *************    Api delete ****************//
-
-  const delee = async () => {
-    console.log(productidx);
-    const dele = await axios.delete(`${API_URL}/ownerpage/${productidx}`);
-    setDeletedd(dele.data);
-  };
-
-  //   *************    Api updata ****************//
-
-  const updata = async (productidx, edit) => {
-    const put = await axios.patch(`${API_URL}/ownerpage/${productidx}`, edit);
-    setUpdataa(put.data);
-  };
-  //   *************    Api Show ****************//
+  closeEdit();
 
   const replay = async () => {
-    const store = await axios.get(`${API_URL}/ownerpage`);
+    const store = await axios.get("http://localhost:3012/ownerpage");
 
     setStorge(store.data);
   };
   useEffect(() => {
     replay();
-  }, [replay]);
-  //   *************    Api add ****************//
-  const addd = async () => {
-    const respose = await axios.post(`${API_URL}/ownerpage`, stata);
-
-    const [apipost, setApipost] = useState(respose.data);
-
-    setApipost((old) => {
-      return [...old, stata];
-    });
-  };
+  }, [starge]);
 
   //   ************* handeler of insert inputs****************//
   const handler = function (e) {
@@ -139,9 +216,18 @@ const Proj = () => {
       return { ...old, [e.target.name]: "" };
     });
   };
+  //   ************* handeler of Time****************//
+
+  const handerTime = (e) => {
+    setStats((old) => {
+      return { ...old, [e.target.name]: e.target.value };
+    });
+    setEtit((old) => {
+      return { ...old, [e.target.name]: e.target.value };
+    });
+  };
 
   //   *************submit of insert product ****************//
-
   const onsubmitt = (e) => {
     e.preventDefault();
 
@@ -297,12 +383,20 @@ const Proj = () => {
                         className="w-full rounded-md h-11 p-3 border-2 shadow-md "
                         type="time"
                         name="time"
-                        value={edit[edit.time]}
+                        value={edit["time"]}
                         onChange={handerTime}
                       />
                       {
                         //console.log(edit.time)}
                       }
+                      <label>Totime</label>
+                      <input
+                        className="w-full rounded-md h-11 p-3 border-2 shadow-md "
+                        type="time"
+                        name="Totime"
+                        value={edit["Totime"]}
+                        onChange={handerTime}
+                      />
                     </DialogTitle>
 
                     <div className="flex items-center my-3 space-x-2 "></div>
