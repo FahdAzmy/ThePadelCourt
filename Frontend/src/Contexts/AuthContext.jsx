@@ -8,13 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const cookieValue = Cookies.get("token");
+    console.log("Cookie Value:", cookieValue);
+
     if (cookieValue) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
     setIsLoading(false);
-  }, []);
+  }, [isLoggedIn]);
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
