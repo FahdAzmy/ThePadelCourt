@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 const Navbar = () => {
   // Simulate user authentication status
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, userRole } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -66,6 +66,14 @@ const Navbar = () => {
           >
             Profile
           </Link>
+          {userRole === "owner" && isLoggedIn ? (
+            <Link
+              to={"/ownerpage"}
+              className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
+            >
+              MyCourts
+            </Link>
+          ) : null}
         </div>
 
         {/* Left side (Login/Signup or Logout) for medium and large screens */}
