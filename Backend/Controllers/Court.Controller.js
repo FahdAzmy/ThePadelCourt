@@ -156,3 +156,9 @@ exports.editCourt = asyncHandler(async (req, res, next) => {
   );
   res.status(200).json({ message: "Court Updated", newCourt });
 });
+exports.getCourt = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const court = await Court.findById(id);
+  if (!court) return next(new appError("Court Not Found", 404));
+  res.status(200).json({ court });
+});

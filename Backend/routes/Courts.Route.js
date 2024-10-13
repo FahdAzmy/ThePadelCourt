@@ -6,6 +6,7 @@ const {
   deleteCourt,
   editCourt,
   getCourtAvailability,
+  getCourt,
 } = require("../Controllers/Court.Controller");
 const photoUpload = require("../middlewares/Uploadeimg");
 const { verifeyToken, isAdminOrOwner } = require("../middlewares/VerifyToken");
@@ -22,4 +23,5 @@ router.get("/getcourt/:courtId", verifeyToken, getCourtAvailability);
 router.get("/getcourtsofowner", verifeyToken, isAdminOrOwner, getOwnerCourts);
 router.delete("/deletecourt", verifeyToken, isAdminOrOwner, deleteCourt);
 router.put("/updatecourt", verifeyToken, isAdminOrOwner, editCourt);
+router.get("/court/:id", getCourt);
 module.exports = router;

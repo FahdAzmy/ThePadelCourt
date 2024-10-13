@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <CourtPage />,
       },
       {
-        path: "book",
+        path: "court/:id",
         element: <Bookk />,
       },
       {

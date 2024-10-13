@@ -43,6 +43,18 @@ export const getCourts = async () => {
     throw error;
   }
 };
+export const getCourt = async (id) => {
+  try {
+    const respone = await axios.get(`${API_URL}/court/${id}`);
+    return respone.data;
+  } catch (error) {
+    console.error(
+      "Error In Get Court",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
 
 // Get User Profile
 export const getUserProfile = async () => {
