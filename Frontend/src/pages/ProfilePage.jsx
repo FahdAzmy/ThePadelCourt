@@ -1,5 +1,6 @@
 import { Outlet, useOutlet } from "react-router-dom";
 import UserSidebar from "../components/UserProfile/UserSidebar";
+import withGuard from "../utils/withGuard"; // Correct spelling
 
 function ProfilePage() {
   const outlet = useOutlet();
@@ -22,4 +23,5 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+// eslint-disable-next-line react-refresh/only-export-components
+export default withGuard(ProfilePage);

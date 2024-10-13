@@ -9,12 +9,10 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
   useEffect(() => {
     const cookieValue = Cookies.get("token");
-    console.log("Cookie Value:", cookieValue);
 
     if (cookieValue) {
       try {
         const decodedToken = jwtDecode(cookieValue); // Decode the token
-        console.log(decodedToken.role);
         setIsLoggedIn(true);
         setUserRole(decodedToken.role);
       } catch (error) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import { getCourts } from "../../api/api";
+import withGuard from "../../utils/withGuard";
 
 const CourtPage = () => {
   const [searchZone, setSearchZone] = useState("");
@@ -170,4 +171,5 @@ const CourtPage = () => {
   );
 };
 
-export default CourtPage;
+// eslint-disable-next-line react-refresh/only-export-components
+export default withGuard(CourtPage);

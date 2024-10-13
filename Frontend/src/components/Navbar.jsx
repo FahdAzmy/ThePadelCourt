@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Right side (PadelCourt) */}
         <div className="text-3xl md:text-4xl  font-extrabold text-lime-500">
-          PadelCourt
+          <Link to={"/"}>PadelCourt</Link>
         </div>
 
         {/* Hamburger Menu for small screens */}
@@ -47,34 +47,36 @@ const Navbar = () => {
         </div>
 
         {/* Center (Links) for medium and large screens */}
-        <div className="hidden md:flex items-center space-x-6">
-          <Link
-            to="/"
-            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
-          >
-            Home
-          </Link>
-          <Link
-            to="/courts"
-            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
-          >
-            Courts
-          </Link>
-          <Link
-            to="/profile"
-            className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
-          >
-            Profile
-          </Link>
-          {userRole === "owner" && isLoggedIn ? (
+        {isLoggedIn && (
+          <div className="hidden md:flex items-center space-x-6">
             <Link
-              to={"/ownerpage"}
+              to="/"
               className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
             >
-              MyCourts
+              Home
             </Link>
-          ) : null}
-        </div>
+            <Link
+              to="/courts"
+              className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
+            >
+              Courts
+            </Link>
+            <Link
+              to="/profile"
+              className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
+            >
+              Profile
+            </Link>
+            {userRole === "owner" && isLoggedIn ? (
+              <Link
+                to={"/ownerpage"}
+                className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
+              >
+                MyCourts
+              </Link>
+            ) : null}
+          </div>
+        )}
 
         {/* Left side (Login/Signup or Logout) for medium and large screens */}
         <div className="hidden md:flex items-center space-x-4">
