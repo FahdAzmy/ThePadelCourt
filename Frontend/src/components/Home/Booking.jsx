@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getCourts } from "../../api/api";
 import CourtCart from "../CourtCart";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 const Book = () => {
   const [allCourts, setAllCourts] = useState([]);
 
@@ -17,17 +19,48 @@ const Book = () => {
     };
     fetchCourts();
   }, []);
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,  // عدد العناصر اللي هتظهر
+    slidesToScroll: 1, // عدد العناصر اللي هتتحرك لما تقلب
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
   return (
     <>
+    
       {" "}
-      <>
+      <div className="w-full">
+      <Slider {...settings}>
         {allCourts.length > 0 ? (
+          
           allCourts.map((court) => <CourtCart court={court} key={court._id} />)
         ) : (
           <div></div>
-        )}
-      </>
+          
+        )
+        }
+        </Slider>
+      </div>
+      
     </>
   );
 };
