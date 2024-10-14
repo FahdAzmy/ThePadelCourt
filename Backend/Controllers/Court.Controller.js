@@ -51,6 +51,9 @@ exports.CreateCourt = asyncHandler(async (req, res, next) => {
     daysInAdvance = 30,
   } = req.body;
   const ownerId = req.user.userId;
+  if (!ownerId) return next(new appError("You Must Login", 404));
+  if (!name || !location || !startHour || !endHour || !pricePerHour)
+    return next(new appError("All Fields is Required", 404));
   const courtIsExist = await Court.findOne({ name });
   if (courtIsExist) return next(new appError("This Court is Exist", 404));
   let courtImg = null;

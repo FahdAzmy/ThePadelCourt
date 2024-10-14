@@ -14,16 +14,12 @@ const padelCourtSchema = new mongoose.Schema(
     },
     operatingHours: {
       start: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0,
-        max: 23,
       },
       end: {
-        type: Number,
+        type: String,
         required: true,
-        min: 0,
-        max: 23,
       },
     },
     availability: [

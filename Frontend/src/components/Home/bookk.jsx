@@ -14,7 +14,7 @@ const Bookk = () => {
       try {
         const response = await getCourt(id);
         setCourt(response.court);
-        console.log(response);
+        console.log(response.court);
       } catch (error) {
         console.error("Error fetching court details:", error);
       }
