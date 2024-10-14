@@ -9,7 +9,7 @@ export default function CourtCart({ court }) {
   return (
     <>
       {court && (
-        <div className="border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white">
+        <div className="border mr-6 border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white">
           <img
             src={court.courtImg.url} // Access court.courtImg.url correctly
             alt={court.name}

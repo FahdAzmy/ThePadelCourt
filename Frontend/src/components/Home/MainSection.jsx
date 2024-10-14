@@ -8,7 +8,7 @@ export default function MainSection() {
       <h2 className="text-3xl font-bold text-gray-900 mb-6  text-center">
         Our Courts
       </h2>
-      <div className="flex gap-5 ">
+      <div className="flex ">
         <Book />
       </div>
     </>
