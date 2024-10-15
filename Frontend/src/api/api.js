@@ -92,3 +92,33 @@ export const changePassaword = async (passwords) => {
 // export const updateUserProfile = async (data) => {
 //   return await axios.put("/api/profile", data); // Adjust the endpoint to match your API
 // };
+//Cancel Booking
+export const CancelBooking = async (id) => {
+  try {
+    const response = await axios.post(`${API_URL}/cancelbooking/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Change Password",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+// Confirm Booking
+export const ConfirmBooking = async (id) => {
+  try {
+    const response = await axios.post(`${API_URL}/confirmbooking/${id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Change Password",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};

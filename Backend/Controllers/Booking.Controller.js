@@ -85,22 +85,25 @@ exports.confirmBooking = async (req, res, next) => {
 
   try {
     const { bookingId } = req.params;
-    const userId = req.user.userId;
 
     // Find the pending booking
     const booking = await Booking.findOne({
       _id: bookingId,
-      userId,
       status: "Pending", // assuming 'pending' is the initial status
     }).session(session);
     if (!booking) {
       next(new appError("Booking not found or not pending"));
     }
+    const userId = booking.userId;
 
     // Update booking status to confirmed
     booking.status = "confirmed";
     await booking.save({ session });
-
+    await User.updateOne(
+      { _id: userId, "bookings._id": bookingId },
+      { $set: { "bookings.$.status": "confirmed" } },
+      { session }
+    );
     await session.commitTransaction();
     res.status(200).json({
       success: true,
@@ -123,17 +126,13 @@ exports.cancelBooking = async (req, res, next) => {
 
   try {
     const { bookingId } = req.params;
-    const userId = req.user.userId;
-    console.log(userId);
-    console.log(bookingId);
+
     const booking = await Booking.findOne({
       _id: bookingId,
-      userId,
-      status: "confirmed",
     }).session(session);
 
     if (!booking) {
-      next(new appError("Booking not found or not confirmed", 404));
+      next(new appError("Booking not found", 404));
     }
     // update Booking status
     booking.status = "cancelled";
@@ -149,6 +148,12 @@ exports.cancelBooking = async (req, res, next) => {
           "availability.$.timeSlots": booking.timeSlot,
         },
       },
+      { session }
+    );
+    const userId = booking.userId; // Assuming you store userId in the booking document
+    await User.updateOne(
+      { _id: userId },
+      { $pull: { bookings: { _id: bookingId } } },
       { session }
     );
 
@@ -167,3 +172,10 @@ exports.cancelBooking = async (req, res, next) => {
     session.endSession();
   }
 };
+exports.getBookings = asyncHandler(async (req, res, next) => {
+  const bookings = await Booking.find();
+  res.status(200).json({
+    success: true,
+    bookings,
+  });
+});

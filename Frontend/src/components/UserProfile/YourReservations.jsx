@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import { CancelBooking, ConfirmBooking } from "../../api/api";
 import { useUser } from "./UserContext"; // Adjust the import path as needed
 
 export default function YourReservations() {
@@ -10,14 +11,22 @@ export default function YourReservations() {
 
   const reservations = userData.bookings || [];
 
-  const handleConfirm = (id) => {
-    // Logic for confirming the reservation
-    console.log("Confirm reservation:", id);
+  const handleConfirm = async (id) => {
+    try {
+      await ConfirmBooking(id);
+      alert("Booking Confirmed");
+    } catch (error) {
+      console.error("Error in Deleting Booking", error);
+    }
   };
 
-  const handleCancel = (id) => {
-    // Logic for canceling the reservation
-    console.log("Cancel reservation:", id);
+  const handleCancel = async (id) => {
+    try {
+      await CancelBooking(id);
+      alert("Booking canceled");
+    } catch (error) {
+      console.error("Error in Deleting Booking", error);
+    }
   };
 
   return (

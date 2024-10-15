@@ -5,8 +5,10 @@ const {
   CreateBooking,
   cancelBooking,
   confirmBooking,
+  getBookings,
 } = require("../Controllers/Booking.Controller");
 router.post("/createbooking", verifeyToken, CreateBooking);
-router.post("/confirmbooking/:bookingId", verifeyToken, confirmBooking);
-router.post("/cancelbooking/:bookingId", verifeyToken, cancelBooking);
+router.post("/confirmbooking/:bookingId", confirmBooking);
+router.post("/cancelbooking/:bookingId", cancelBooking);
+router.get("/bookings", getBookings);
 module.exports = router;
