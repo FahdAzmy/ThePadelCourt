@@ -11,7 +11,7 @@ export default function UserSidebar() {
       <NavLink
         to="accountsettings"
         className={({ isActive }) =>
-          `flex items-center p-2 rounded-lg hover:bg-gray-100 ${
+          `flex items-center font-bold p-2 rounded-lg hover:bg-gray-100 ${
             isActive ? "bg-gray-200" : ""
           }`
         }
@@ -22,7 +22,7 @@ export default function UserSidebar() {
       <NavLink
         to="changepassword"
         className={({ isActive }) =>
-          `flex items-center p-2 rounded-lg hover:bg-gray-100 ${
+          `flex items-center p-2 font-bold rounded-lg hover:bg-gray-100 ${
             isActive ? "bg-gray-200" : ""
           }`
         }
@@ -33,7 +33,7 @@ export default function UserSidebar() {
       <NavLink
         to="reservations"
         className={({ isActive }) =>
-          `flex items-center p-2 rounded-lg hover:bg-gray-100 ${
+          `flex items-center p-2 font-bold rounded-lg hover:bg-gray-100 ${
             isActive ? "bg-gray-200" : ""
           }`
         }

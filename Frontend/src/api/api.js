@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api";
 //Login User
 export const Login = async (userData) => {
   try {
@@ -31,6 +31,7 @@ export const Signup = async (userData) => {
     throw error;
   }
 };
+//Get Courts
 export const getCourts = async () => {
   try {
     const respone = await axios.get(`${API_URL}/getcourts`);
@@ -43,6 +44,7 @@ export const getCourts = async () => {
     throw error;
   }
 };
+// Get Spacific Court
 export const getCourt = async (id) => {
   try {
     const respone = await axios.get(`${API_URL}/court/${id}`);
@@ -58,9 +60,35 @@ export const getCourt = async (id) => {
 
 // Get User Profile
 export const getUserProfile = async () => {
-  return await axios.get("/api/profile"); // Adjust the endpoint to match your API
+  try {
+    const response = await axios.get(`${API_URL}/getuser`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Get user",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+// change password
+export const changePassaword = async (passwords) => {
+  try {
+    const response = await axios.post(`${API_URL}/changepassword`, passwords, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Change Password",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
 };
 
-export const updateUserProfile = async (data) => {
-  return await axios.put("/api/profile", data); // Adjust the endpoint to match your API
-};
+// export const updateUserProfile = async (data) => {
+//   return await axios.put("/api/profile", data); // Adjust the endpoint to match your API
+// };

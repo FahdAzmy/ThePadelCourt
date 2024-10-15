@@ -16,6 +16,35 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [/.+@.+\..+/, "Please enter a valid email address"],
   },
+  bookings: [
+    {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+      courtId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "PadelCourt",
+      },
+      courtName: String,
+      date: Date,
+      timeSlot: {
+        start: String,
+        end: String,
+      },
+      status: {
+        type: String,
+        enum: ["confirmed", "Pending", "cancelled"],
+        default: "Pending",
+      },
+      createdAt: Date,
+    },
+  ],
+  role: {
+    type: String,
+    enum: ["user", "admin", "owner"],
+    default: "user",
+  },
   role: {
     type: String,
     enum: ["user", "admin", "owner"],

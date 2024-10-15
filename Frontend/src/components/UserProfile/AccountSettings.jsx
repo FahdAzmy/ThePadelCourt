@@ -1,39 +1,45 @@
-import { useEffect, useState } from "react";
+import { useUser } from "./UserContext"; // Adjust the import path as needed
+import { User, Mail, Star } from "lucide-react"; // Assuming you're using lucide-react for icons
 
-export default function AccountSettings(){
-    const [userData, setUserData] = useState({ name: "", email: "" });
+export default function AccountSettings() {
+  const { userData, loading } = useUser();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch(""); 
-                const data = await response.json();
-                setUserData(data);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
+  if (loading) {
+    return <div className="max-w-2xl mx-auto p-6">Loading...</div>;
+  }
 
-        fetchUserData();
-    }, []);
-
-    return (
-        <div className="container-fluid py-5">
-            <h1 className="text-center mb-4">Personal Information</h1>
-            <form className="row g-3 justify-content-center">
-                <div className="col-12 col-md-6">
-                <label htmlFor="name" className="form-label">
-                    Your Name 
-                </label>
-                <input type="text" className="form-control" id="name" name="name" value={userData.name} disabled />
-                </div>
-                <div className="col-12 col-md-6">
-                <label htmlFor="email" className="form-label">
-                    Email 
-                </label>
-                <input type="email" className="form-control" id="email" name="email" value={userData.email} disabled />
-                </div>
-            </form>
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        Personal Information
+      </h1>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b pb-3">
+          <div className="flex items-center">
+            <User className="text-blue-500 mr-3" size={24} />
+            <span className="text-gray-600 font-medium">Name</span>
+          </div>
+          <span className="text-gray-800">{userData.name}</span>
         </div>
-    )
+
+        <div className="flex items-center justify-between border-b pb-3">
+          <div className="flex items-center">
+            <Mail className="text-blue-500 mr-3" size={24} />
+            <span className="text-gray-600 font-medium">Email</span>
+          </div>
+          <span className="text-gray-800">{userData.email}</span>
+        </div>
+
+        <div className="flex items-center justify-between border-b pb-3">
+          <div className="flex items-center">
+            <Star className="text-blue-500 mr-3" size={24} />
+            <span className="text-gray-600 font-medium">Role</span>
+          </div>
+          <span className="text-gray-800">
+            {userData.role || "Not specified"}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 }

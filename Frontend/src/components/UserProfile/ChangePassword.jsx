@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { changePassaword } from "../../api/api";
 
 export default function ChangePassword() {
   const [oldPasswordInput, setOldPasswordInput] = useState("");
@@ -15,39 +16,22 @@ export default function ChangePassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrorMessage(""); // Clear previous errors
     try {
-      // Assuming you have an API endpoint to check the old password
-      const response = await fetch("/api/check-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ oldPassword: oldPasswordInput }),
+      await changePassaword({
+        oldPassword: oldPasswordInput,
+        newPassword: newPasswordInput,
       });
-
-      const result = await response.json();
-
-      if (!result.match) {
-        // If the old password does not match, show an error
-        setErrorMessage("Old password is incorrect");
-        return;
-      }
-
-      // If the password matches, proceed to change the password
-      await fetch("/api/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newPassword: newPasswordInput }),
-      });
-
-      setErrorMessage(""); // Clear error on success
       alert("Password changed successfully!");
+      // Clear inputs after successful change
+      setOldPasswordInput("");
+      setNewPasswordInput("");
     } catch (error) {
       console.error("Error changing password:", error);
-      setErrorMessage("There was an error processing your request.");
+      setErrorMessage(
+        error.response?.data?.message ||
+          "There was an error processing your request."
+      );
     }
   };
 

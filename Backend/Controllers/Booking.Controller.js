@@ -2,6 +2,8 @@ const asyncHandler = require("../middlewares/AsyncHandler");
 const appError = require("../utils/AppError");
 const Court = require("../models/Court.Model");
 const Booking = require("../models/Booking.Model");
+const User = require("../models/User.Model");
+
 const { default: mongoose } = require("mongoose");
 exports.CreateBooking = async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -34,7 +36,6 @@ exports.CreateBooking = async (req, res, next) => {
       );
     }
 
-    // إنشاء حجز جديد
     const booking = new Booking({
       courtId,
       userId,
@@ -44,7 +45,6 @@ exports.CreateBooking = async (req, res, next) => {
 
     await booking.save({ session });
 
-    // تحديث توفر المحكمة
     await Court.updateOne(
       {
         _id: courtId,
@@ -53,7 +53,23 @@ exports.CreateBooking = async (req, res, next) => {
       { $pull: { "availability.$.timeSlots": timeSlot } },
       { session }
     );
-
+    await User.updateOne(
+      { _id: userId },
+      {
+        $push: {
+          bookings: {
+            _id: booking._id,
+            courtId: booking.courtId,
+            courtName: court.name,
+            date: booking.date,
+            timeSlot: booking.timeSlot,
+            status: booking.status,
+            createdAt: booking.createdAt,
+          },
+        },
+      },
+      { session }
+    );
     await session.commitTransaction();
     res.status(200).json({ message: "Booking Created Successfully", booking });
   } catch (error) {
