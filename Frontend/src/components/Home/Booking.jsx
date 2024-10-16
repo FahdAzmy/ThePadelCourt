@@ -1,31 +1,33 @@
 import { useEffect, useState } from "react";
-import { getCourts } from "../../api/api";
-import CourtCart from "../CourtCart";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { getCourts } from "../../api/api"; // Function to fetch courts from the API
+import CourtCart from "../CourtCart"; // Component to display individual court details
+import Slider from "react-slick"; // Carousel component for displaying courts
+import "slick-carousel/slick/slick.css"; // Default styles for the carousel
+import "slick-carousel/slick/slick-theme.css"; // Theme styles for the carousel
+
 const Book = () => {
-  const [allCourts, setAllCourts] = useState([]);
+  const [allCourts, setAllCourts] = useState([]); // State to hold fetched court data
 
   useEffect(() => {
     const fetchCourts = async () => {
       try {
-        const data = await getCourts();
-        setAllCourts(data.courts);
-        console.log(allCourts);
+        const data = await getCourts(); // Fetch courts data from API
+        setAllCourts(data.courts); // Update state with fetched data
       } catch (error) {
-        console.error("Error Fetching Courts:", error);
+        console.error("Error Fetching Courts:", error); // Log any fetching errors
       }
     };
-    fetchCourts();
-  }, []);
+    fetchCourts(); // Call fetch function on component mount
+  }, []); // Run only once on mount
+
   const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3, // عدد العناصر اللي هتظهر
-    slidesToScroll: 1, // عدد العناصر اللي هتتحرك لما تقلب
+    dots: true, // Enable pagination dots
+    infinite: true, // Enable infinite scrolling
+    speed: 500, // Transition speed
+    slidesToShow: 3, // Number of slides to show at once
+    slidesToScroll: 1, // Number of slides to scroll on each action
     responsive: [
+      // Responsive settings for different screen sizes
       {
         breakpoint: 1024,
         settings: {
@@ -44,61 +46,28 @@ const Book = () => {
       },
     ],
   };
+
   return (
-    <>
+    <div className="w-full">
       {" "}
-      <div className="w-full">
-        <Slider {...settings}>
-          {allCourts.length > 0 ? (
-            allCourts.map((court) => (
-              <CourtCart court={court} key={court._id} />
-            ))
-          ) : (
-            <div></div>
-          )}
-        </Slider>
-      </div>
-    </>
+      {/* Container for the slider */}
+      <Slider {...settings}>
+        {" "}
+        {/* Slider with defined settings */}
+        {allCourts.length > 0 ? ( // Check if there are courts to display
+          allCourts.map(
+            (
+              court // Map through courts to create CourtCart components
+            ) => (
+              <CourtCart court={court} key={court._id} /> // Render each CourtCart with unique key
+            )
+          )
+        ) : (
+          <div>No courts available</div> // Fallback if no courts are found
+        )}
+      </Slider>
+    </div>
   );
 };
 
-export default Book;
-{
-  /* <div
-className="p-4" // يضيف مساحة حول العنصر
->
-<div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-  <div className="relative">
-    <img
-      src={starge.ImgeUrl}
-      alt={starge.title}
-      className="w-full h-56 object-cover"
-    />
-    <div className="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-      Available
-    </div>
-  </div>
-  <div className="p-6">
-    <h3 className="text-xl font-semibold mb-2">{starge.title}</h3>
-    <p className="text-gray-600 mb-4">{starge.Discription}</p>
-    <div className="flex items-center mb-2">
-      <MapPin className="w-5 h-5 text-gray-400 mr-2" />
-      <span className="text-gray-600 text-sm">{starge.Location}</span>
-    </div>
-    <div className="flex items-center mb-4">
-      <Clock className="w-5 h-5 text-gray-400 mr-2" />
-      <span className="text-gray-600 text-sm">Open 7 AM - 11 PM</span>
-    </div>
-
-    <button
-      onClick={handelbook}
-      disabled={loading}
-      className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center"
-    >
-      <Calendar className="w-5 h-5 mr-2" />
-      View Details
-    </button>
-  </div>
-</div>
-</div> */
-}
+export default Book; // Exporting the Book component

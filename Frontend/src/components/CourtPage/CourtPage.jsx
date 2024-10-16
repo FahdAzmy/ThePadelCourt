@@ -5,14 +5,17 @@ import withGuard from "../../utils/withGuard";
 import CourtCart from "../CourtCart";
 
 const CourtPage = () => {
+  // State variables for search filters and court data
   const [searchZone, setSearchZone] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchTime, setSearchTime] = useState("");
   const [filteredCourts, setFilteredCourts] = useState([]);
   const [allCourts, setAllCourts] = useState([]);
 
+  // Extract unique zones from all courts
   const zones = Array.from(new Set(allCourts.map((court) => court.location)));
 
+  // Extract unique time slots from all courts' availability
   const timeSlots = Array.from(
     new Set(
       allCourts.flatMap((court) =>
@@ -23,6 +26,7 @@ const CourtPage = () => {
     )
   );
 
+  // Fetch courts data on component mount
   useEffect(() => {
     const fetchCourts = async () => {
       try {
@@ -36,6 +40,7 @@ const CourtPage = () => {
     fetchCourts();
   }, []);
 
+  // Handle search filtering for courts based on selected zone, date, and time
   const handleSearch = () => {
     setFilteredCourts(
       allCourts.filter((court) => {
@@ -49,7 +54,7 @@ const CourtPage = () => {
           )
         );
 
-        // مقارنة التاريخ
+        // Compare the availability date with the selected search date
         const isDateMatch = court.availability.some(
           (availability) =>
             new Date(availability.date).toLocaleDateString() ===
@@ -65,6 +70,7 @@ const CourtPage = () => {
     );
   };
 
+  // Trigger search on Enter key press
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
@@ -121,6 +127,7 @@ const CourtPage = () => {
         </div>
       </div>
 
+      {/* Display courts based on the filtered results */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourts.length > 0 ? (
           filteredCourts.map((court) => (

@@ -29,7 +29,7 @@ exports.Signup = asynHandler(async (req, res, next) => {
 // User Login
 /**
  * @desc Login a user and set JWT token in cookie
- * @route POST /api/salarytracker/login
+ * @route POST /api/login
  * @access Public
  */
 exports.Login = asynHandler(async (req, res, next) => {
@@ -44,7 +44,7 @@ exports.Login = asynHandler(async (req, res, next) => {
 // User Logout
 /**
  * @desc Logout a user and clear the JWT token cookie
- * @route POST /api/salarytracker/logout
+ * @route POST /api/logout
  * @access Private
  * @middleware verifyToken
  */
