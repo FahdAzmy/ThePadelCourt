@@ -9,7 +9,9 @@ export default function AccountSettings() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    
+    <div className="max-w-2xl mx-36 p-6">
+      <br/><br/>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         Personal Information
       </h1>

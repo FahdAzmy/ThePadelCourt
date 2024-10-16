@@ -108,93 +108,73 @@ const Proj = () => {
         ))}
       </div>
 
-      {/* Edit Modal */}
-      <Dialog
-        open={isOpenEditmModul}
-        onClose={closeEdit}
-        className="relative z-10 "
-      >
-        <div className="fixed inset-0  bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center pb-2 justify-center p-4">
-          <DialogPanel className="w-full max-w-md h-1/2  rounded bg-white p-6">
-            <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
-              Edit Court
-            </DialogTitle>
-            <form onSubmit={handleEditSubmit}>
-              <div className="mt-2">
-                <label className="block text-sm font-medium h-6 text-gray-700">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  defaultValue={editingCourt?.name}
-                  className="mt-1 block w-full rounded-md h-7 font-semibold border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mt-2">
-                <label className="block text-sm font-medium  text-gray-700">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  defaultValue={editingCourt?.location}
-                  className="mt-1 block w-full rounded-md h-7 font-semibold border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mt-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Price Per Hour
-                </label>
-                <input
-                  type="number"
-                  name="pricePerHour"
-                  defaultValue={editingCourt?.pricePerHour}
-                  className="mt-1 block w-full rounded-md h-7 font-semibold border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mt-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Start Hour
-                </label>
-                <input
-                  type="time"
-                  name="startHour"
-                  defaultValue={editingCourt?.availability?.startHour}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mt-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  End Hour
-                </label>
-                <input
-                  type="time"
-                  name="endHour"
-                  defaultValue={editingCourt?.availability?.endHour}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mt-4  flex justify-end">
-                <Button
-                  type="submit"
-                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                >
-                  Save Changes
-                </Button>
-                <Button
-                  type="button"
-                  className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
-                  onClick={closeEdit}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </DialogPanel>
+ {/* Edit Modal */}
+<Dialog
+  open={isOpenEditmModul}
+  onClose={closeEdit}
+  className="relative z-10"
+>
+  <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+  <div className="fixed inset-0 flex items-center justify-center p-4">
+    <Dialog.Panel className="w-full max-w-lg h-auto rounded-lg bg-white p-6 shadow-lg">
+      <Dialog.Title className="text-2xl font-semibold text-gray-800 mb-4">
+        Edit Court
+      </Dialog.Title>
+      <form onSubmit={handleEditSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium  text-gray-700">
+            Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            defaultValue={editingCourt?.name}
+            className="mt-1 block pl-3 w-full  rounded-md h-10 border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          />
         </div>
-      </Dialog>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Location
+          </label>
+          <input
+            type="text"
+            name="location"
+            defaultValue={editingCourt?.location}
+            className="mt-1 block pl-3 w-full rounded-md h-10 border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Price Per Hour
+          </label>
+          <input
+            type="number"
+            name="pricePerHour"
+            defaultValue={editingCourt?.pricePerHour}
+            className="mt-1 pl-3 block w-full rounded-md h-10 border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          />
+        </div>
+
+        <div className="mt-6 flex justify-end space-x-2">
+          <Button
+            type="submit"
+            className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            Save Changes
+          </Button>
+          <Button
+            type="button"
+            className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
+            onClick={closeEdit}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </Dialog.Panel>
+  </div>
+</Dialog>
+
 
       {/* Remove Modal */}
       <Dialog

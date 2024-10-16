@@ -9,10 +9,10 @@ export default function UserSidebar() {
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
       <NavLink
-        to="accountsettings"
-        className={({ isActive }) =>
-          `flex items-center font-bold p-2 rounded-lg hover:bg-gray-100 ${
-            isActive ? "bg-gray-200" : ""
+        to=""
+        className={() =>
+          `flex items-center font-bold p-2 rounded-lg hover:bg-gray-100 
+            
           }`
         }
       >

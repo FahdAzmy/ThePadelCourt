@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home  />,
       },
       {
         path: "login",
@@ -48,11 +48,11 @@ const router = createBrowserRouter([
         element: <Bookk />,
       },
       {
-        path: "profile",
+        path: "/profile",
         element: <ProfilePage />,
         children: [
           {
-            path: "accountsettings",
+            index:true , 
             element: <AccountSettings />,
           },
           {

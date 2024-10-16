@@ -30,7 +30,8 @@ export default function YourReservations() {
   };
 
   return (
-    <div className="max-w-4xl overflow-auto    flex flex-col h-screen mx-auto p-4">
+    <div className="max-w-4xl overflow-auto    flex flex-col h-screen mx-20 p-4">
+      <br/><br/>
       <h1 className="text-3xl font-bold mb-6 text-center">Your Reservations</h1>
       {reservations.length === 0 ? (
         <p className="text-center text-lg text-gray-500">

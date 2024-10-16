@@ -36,7 +36,8 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="max-w-md mx-auto py-6">
+    <div className="max-w-2xl mx-36 p-6 w-full">
+      <br/><br/>
       <h1 className="text-2xl text-center mb-4 font-semibold">
         Change Password
       </h1>
@@ -46,11 +47,11 @@ export default function ChangePassword() {
             htmlFor="oldpassword"
             className="block text-sm font-medium text-gray-700"
           >
-            Old Password <span className="text-red-500">*</span>
+           Old Password  <span className="text-red-500">*</span>
           </label>
           <input
             type="password"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 py-1 px-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
             id="oldpassword"
             value={oldPasswordInput}
             onChange={handleOldPasswordChange}
@@ -66,7 +67,7 @@ export default function ChangePassword() {
           </label>
           <input
             type="password"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 py-1 px-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"
             id="newpassword"
             value={newPasswordInput}
             onChange={handleNewPasswordChange}
@@ -81,7 +82,7 @@ export default function ChangePassword() {
         <div className="text-center">
           <button
             type="submit"
-            className="w-full mt-4 bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full max-w-44 mt-4 bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
           >
             Save Changes
           </button>
