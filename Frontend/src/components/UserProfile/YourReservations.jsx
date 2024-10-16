@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import toast, { Toaster } from "react-hot-toast";
 import { CancelBooking, ConfirmBooking } from "../../api/api";
 import { useUser } from "./UserContext"; // Adjust the import path as needed
 
@@ -14,7 +15,9 @@ export default function YourReservations() {
   const handleConfirm = async (id) => {
     try {
       await ConfirmBooking(id);
-      alert("Booking Confirmed");
+      //alert("Booking Confirmed");
+      toast.success("Booking Confirmed");
+
     } catch (error) {
       console.error("Error in Deleting Booking", error);
     }
@@ -23,7 +26,9 @@ export default function YourReservations() {
   const handleCancel = async (id) => {
     try {
       await CancelBooking(id);
-      alert("Booking canceled");
+      toast.error("Booking canceled");
+
+      //alert("Booking canceled");
     } catch (error) {
       console.error("Error in Deleting Booking", error);
     }
@@ -91,6 +96,7 @@ export default function YourReservations() {
           ))}
         </ul>
       )}
-    </div>
+      <Toaster />
+      </div>
   );
 }

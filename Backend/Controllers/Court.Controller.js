@@ -106,7 +106,7 @@ exports.CreateCourt = asyncHandler(async (req, res, next) => {
     ownerId,
     courtImg,
   });
-
+ 
   res.status(201).json({ message: "Court created Successfully", newCourt });
 });
 
