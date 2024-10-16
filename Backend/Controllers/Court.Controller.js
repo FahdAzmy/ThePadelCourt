@@ -45,11 +45,16 @@ exports.CreateCourt = asyncHandler(async (req, res, next) => {
   const {
     name,
     location,
-    startHour,
-    endHour,
+
     pricePerHour,
     daysInAdvance = 30,
   } = req.body;
+  const startHour = parseInt(req.body.startHour, 10);
+  const endHour = parseInt(req.body.endHour, 10);
+  // Check if the conversion was successful
+  if (isNaN(startHour) || isNaN(endHour)) {
+    return next(new appError("Invalid startHour or endHour", 400));
+  }
   const ownerId = req.user.userId;
   if (!ownerId) return next(new appError("You Must Login", 404));
   if (!name || !location || !startHour || !endHour || !pricePerHour)
@@ -60,6 +65,7 @@ exports.CreateCourt = asyncHandler(async (req, res, next) => {
   if (req.file) {
     courtImg = await UploadPhotoToCloud(req.file); // استدعاء فانكشن رفع الصورة
   }
+
   const availability = [];
   const startDate = new Date();
   startDate.setHours(0, 0, 0, 0);

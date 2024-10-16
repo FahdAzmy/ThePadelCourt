@@ -96,7 +96,7 @@ const Proj = () => {
         <CreateCourtModal open={open} isOpen={isOpen} close={close} />
       </div>
       <br />
-      <div className="w-auto ml-20 container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <div className="w-auto ml-20 max-md:flex max-md:justify-center max-md:flex-col max-md:items-center max-md:my-2 max-md:mx-auto container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {starge.map((court) => (
           <Appp
             key={court._id}
@@ -114,9 +114,9 @@ const Proj = () => {
         onClose={closeEdit}
         className="relative z-10 "
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md h-1/2 rounded bg-white p-6">
+        <div className="fixed inset-0  bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center pb-2 justify-center p-4">
+          <DialogPanel className="w-full max-w-md h-1/2  rounded bg-white p-6">
             <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
               Edit Court
             </DialogTitle>
@@ -176,7 +176,7 @@ const Proj = () => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4  flex justify-end">
                 <Button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"

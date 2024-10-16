@@ -138,18 +138,29 @@ exports.cancelBooking = async (req, res, next) => {
     booking.status = "cancelled";
     await booking.save({ session });
     // return the time back
-    await Court.updateOne(
+    const updateResult = await Court.updateOne(
       {
         _id: booking.courtId,
         "availability.date": booking.date,
       },
       {
         $push: {
-          "availability.$.timeSlots": booking.timeSlot,
+          "availability.$[elem].timeSlots": {
+            $each: [booking.timeSlot],
+            $sort: { start: 1 }, // Sort the time slots after adding the new one
+          },
         },
       },
-      { session }
+      {
+        arrayFilters: [{ "elem.date": booking.date }],
+        session,
+      }
     );
+
+    if (updateResult.nModified === 0) {
+      throw new Error("Failed to update court availability");
+    }
+
     const userId = booking.userId; // Assuming you store userId in the booking document
     await User.updateOne(
       { _id: userId },

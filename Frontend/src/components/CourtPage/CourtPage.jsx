@@ -72,12 +72,12 @@ const CourtPage = () => {
   };
 
   return (
-    <div className="pt-20 px-4">
+    <div className="pt-20 px-4 max-md:pr-0 mb-4 max-md:my-2 max-md:mx-auto">
       <h1 className="text-4xl font-bold text-center mb-8">Our Courts</h1>
 
       {/* Search Filters */}
-      <div className="mb-6">
-        <div className="flex flex-col md:flex-row md:space-x-2 mb-4">
+      <div className="mb-6 mr-3 ">
+        <div className="flex gap-2 flex-col md:flex-row md:space-x-2 mb-4">
           <select
             className="border rounded-lg p-2 flex-1"
             value={searchZone}

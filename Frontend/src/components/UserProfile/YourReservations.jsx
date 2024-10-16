@@ -30,7 +30,7 @@ export default function YourReservations() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl overflow-auto    flex flex-col h-screen mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Your Reservations</h1>
       {reservations.length === 0 ? (
         <p className="text-center text-lg text-gray-500">
@@ -44,11 +44,9 @@ export default function YourReservations() {
               className="border p-6 rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow duration-300"
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold">
-                  {reservation.courtName}
-                </h3>
+                <h3 className="text-xl  font-bold">{reservation.courtName}</h3>
                 <span
-                  className={`px-3 py-1 rounded-full text-white ${
+                  className={`px-3 py-1 font-semibold rounded-full text-white ${
                     reservation.status === "confirmed"
                       ? "bg-green-500"
                       : "bg-yellow-500"
@@ -58,6 +56,13 @@ export default function YourReservations() {
                 </span>
               </div>
               <div className="text-gray-600">
+                <p className="font-bold">
+                  Date: Date:{" "}
+                  {new Date(reservation.date).toLocaleDateString("en-GB", {
+                    timeZone: "UTC",
+                  })}
+                </p>
+
                 <p className="mb-2">
                   <span className="font-semibold">Check-in:</span>{" "}
                   {reservation.timeSlot.start}

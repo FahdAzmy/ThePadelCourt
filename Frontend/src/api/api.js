@@ -122,3 +122,18 @@ export const ConfirmBooking = async (id) => {
     throw error;
   }
 };
+//Create Booking
+export const CreateBooking = async (bookingData) => {
+  try {
+    const response = await axios.post(`${API_URL}/createbooking`, bookingData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Change Password",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};

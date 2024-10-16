@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function CourtCart({ court }) {
   const navigate = useNavigate();
 
-  // Destructure `court` from props
   return (
     <>
       {court && (

@@ -4,22 +4,21 @@ import { AuthContext } from "../Contexts/AuthContext";
 import Cookies from "js-cookie";
 
 const Navbar = () => {
-  // Simulate user authentication status
   const { isLoggedIn, setIsLoggedIn, userRole } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Handle user logout: remove token cookie, update authentication state, and navigate to login page
   function handleLogout() {
     Cookies.remove("token");
     setIsLoggedIn(false);
     navigate("/login");
   }
+
   return (
-    <nav className="bg-transparent p-4  fixed top-0 left-0 w-full z-10">
+    <nav className="bg-transparent p-4 fixed top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Right side (PadelCourt) */}
-        <div className="text-3xl md:text-4xl  font-extrabold text-lime-500">
+        <div className="text-3xl md:text-4xl font-extrabold text-lime-500">
           <Link to={"/"}>PadelCourt</Link>
         </div>
 
@@ -67,14 +66,14 @@ const Navbar = () => {
             >
               Profile
             </Link>
-            {userRole === "owner" && isLoggedIn ? (
+            {userRole === "owner" && (
               <Link
                 to={"/ownerpage"}
                 className="text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300"
               >
                 MyCourts
               </Link>
-            ) : null}
+            )}
           </div>
         )}
 
@@ -83,7 +82,7 @@ const Navbar = () => {
           {isLoggedIn ? (
             <button
               className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
-              onClick={() => handleLogout()}
+              onClick={handleLogout}
             >
               Logout
             </button>
@@ -91,7 +90,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-gradient-to-r font-bold bg-rose-900 text-white px-4 py-2  rounded-lg shadow-lg hover:from-lime-900 hover:to-blue-900 transition duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r font-bold bg-rose-900 text-white px-4 py-2 rounded-lg shadow-lg hover:from-lime-900 hover:to-blue-900 transition duration-300 transform hover:scale-105"
               >
                 Login
               </Link>
@@ -108,24 +107,46 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden flex flex-col items-center space-y-4 mt-4">
+        <div className="md:hidden flex flex-col items-center space-y-4 mt-4 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+          <Link
+            to="/"
+            className="text-lime-500 font-bold text-xl hover:text-lime-600 transition duration-300"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Home
+          </Link>
           <Link
             to="/courts"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-lime-500 font-bold text-xl hover:text-lime-600 transition duration-300"
+            onClick={() => setIsMenuOpen(false)}
           >
             Courts
           </Link>
           <Link
             to="/profile"
-            className="text-gray-700 font-semibold hover:text-green-600 transition duration-300"
+            className="text-lime-500 font-bold text-xl hover:text-lime-600 transition duration-300"
+            onClick={() => setIsMenuOpen(false)}
           >
             Profile
           </Link>
 
+          {userRole === "owner" && (
+            <Link
+              to="/ownerpage"
+              className="text-lime-500 font-bold text-xl hover:text-lime-600 transition duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              MyCourts
+            </Link>
+          )}
+
           {isLoggedIn ? (
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-600 transition duration-300"
-              onClick={() => setIsLoggedIn(false)}
+              onClick={() => {
+                handleLogout();
+                setIsMenuOpen(false);
+              }}
             >
               Logout
             </button>
@@ -134,12 +155,14 @@ const Navbar = () => {
               <Link
                 to="/login"
                 className="bg-blue-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-600 transition duration-300"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
                 to="/register"
                 className="bg-green-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-green-600 transition duration-300"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Signup
               </Link>
