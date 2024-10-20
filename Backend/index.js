@@ -15,7 +15,9 @@ const {
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "https://padelcourt.vercel.app",
+    origin:
+      process.env.CORS_ORIGIN ||
+      "https://padelcourt-m907iusj9-fahd-azmys-projects.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
