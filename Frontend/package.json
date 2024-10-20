@@ -37,6 +37,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+        "rollup": "^3.0.0",
     "@eslint/js": "^9.9.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
