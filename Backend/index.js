@@ -15,7 +15,7 @@ const {
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5174",
+    origin: process.env.CORS_ORIGIN || "https://padelcourt.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -37,7 +37,7 @@ app.use(NotFoundRoutes);
 app.use(GlobalErrorHandler);
 
 // Connect To DB
-const Port = process.env.PORT || 3000;
+const Port = process.env.PORT || 4000;
 app.listen(Port, () => {
   ConnectToDb();
   console.log("Server Listening on Port", Port);
