@@ -14,6 +14,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.6",
