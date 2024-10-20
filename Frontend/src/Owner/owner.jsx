@@ -1,4 +1,4 @@
-import { Proj } from "./proj";
+import Proj from "./Proj";
 const Owner = () => {
   return (
     <>
