@@ -58,6 +58,56 @@ export const getCourt = async (id) => {
   }
 };
 
+// Get membership plans
+export const getMembershipPlans = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/membership-plans`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Get Membership Plans",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
+// Create Stripe membership checkout session
+export const createMembershipCheckoutSession = async (planId) => {
+  try {
+    const response = await axios.post(`${API_URL}/create-membership-checkout-session`, {
+      planId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Create Membership Checkout",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
+// Create Stripe checkout session for a court booking
+export const createBookingCheckoutSession = async (bookingId) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/create-booking-checkout-session`,
+      { bookingId },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error in Create Booking Checkout",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
 // Get User Profile
 export const getUserProfile = async () => {
   try {
@@ -95,13 +145,17 @@ export const changePassaword = async (passwords) => {
 //Cancel Booking
 export const CancelBooking = async (id) => {
   try {
-    const response = await axios.post(`${API_URL}/cancelbooking/${id}`, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${API_URL}/cancelbooking/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(
-      "Error in Change Password",
+      "Error in Cancel Booking",
       error.response ? error.response.data : error.message
     );
     throw error;
@@ -110,13 +164,17 @@ export const CancelBooking = async (id) => {
 // Confirm Booking
 export const ConfirmBooking = async (id) => {
   try {
-    const response = await axios.post(`${API_URL}/confirmbooking/${id}`, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${API_URL}/confirmbooking/${id}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(
-      "Error in Change Password",
+      "Error in Confirm Booking",
       error.response ? error.response.data : error.message
     );
     throw error;
@@ -131,7 +189,7 @@ export const CreateBooking = async (bookingData) => {
     return response.data;
   } catch (error) {
     console.error(
-      "Error in Change Password",
+      "Error in Create Booking",
       error.response ? error.response.data : error.message
     );
     throw error;

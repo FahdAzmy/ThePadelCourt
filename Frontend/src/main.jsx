@@ -10,6 +10,12 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import Home from "./pages/HomePage.jsx";
 import CourtPage from "./components/CourtPage/CourtPage.jsx";
 import { AuthProvider } from "./Contexts/AuthContext.jsx";
+import MembershipPage from "./pages/MembershipPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
+import {
+  CheckoutCancelPage,
+  CheckoutSuccessPage,
+} from "./pages/CheckoutStatusPage.jsx";
 
 import ProfilePage from "./pages/ProfilePage.jsx";
 import AccountSettings from "./components/UserProfile/AccountSettings.jsx";
@@ -42,6 +48,22 @@ const router = createBrowserRouter([
       {
         path: "courts",
         element: <CourtPage />,
+      },
+      {
+        path: "memberships",
+        element: <MembershipPage />,
+      },
+      {
+        path: "checkout/:planId",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "checkout/success",
+        element: <CheckoutSuccessPage />,
+      },
+      {
+        path: "checkout/cancel",
+        element: <CheckoutCancelPage />,
       },
       {
         path: "court/:id",

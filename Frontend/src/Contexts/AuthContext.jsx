@@ -1,43 +1,48 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useEffect } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode"; // Use default import
 export const AuthContext = createContext();
-export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userRole, setUserRole] = useState(null);
-  useEffect(() => {
-    const cookieValue = Cookies.get("token");
 
-    if (cookieValue) {
-      try {
-        const decodedToken = jwtDecode(cookieValue); // Decode the token
-        setIsLoggedIn(true);
-        setUserRole(decodedToken.role);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        setIsLoggedIn(false);
-        setUserRole(null);
-      }
-    } else {
-      setIsLoggedIn(false);
-      setUserRole(null);
-    }
-    setIsLoading(false);
-  }, [isLoggedIn, userRole]);
+const getAuthStateFromCookie = () => {
+  const cookieValue = Cookies.get("token");
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-pulse text-center">
-          <p className="text-lg font-semibold">Loading...</p>
-        </div>
-      </div>
-    );
+  if (!cookieValue) {
+    return { isLoggedIn: false, userRole: null };
   }
+
+  try {
+    const decodedToken = jwtDecode(cookieValue);
+    return { isLoggedIn: true, userRole: decodedToken.role };
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return { isLoggedIn: false, userRole: null };
+  }
+};
+
+export const AuthProvider = ({ children }) => {
+  const [authState, setAuthState] = useState(getAuthStateFromCookie);
+
+  const setIsLoggedIn = useCallback((nextIsLoggedIn) => {
+    if (!nextIsLoggedIn) {
+      setAuthState({ isLoggedIn: false, userRole: null });
+      return;
+    }
+
+    setAuthState(getAuthStateFromCookie());
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      isLoggedIn: authState.isLoggedIn,
+      setIsLoggedIn,
+      userRole: authState.userRole,
+    }),
+    [authState.isLoggedIn, authState.userRole, setIsLoggedIn]
+  );
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userRole }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

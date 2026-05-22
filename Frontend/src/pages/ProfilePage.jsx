@@ -1,29 +1,41 @@
 import { Outlet, useOutlet } from "react-router-dom";
 import UserSidebar from "../components/UserProfile/UserSidebar";
-import withGuard from "../utils/withGuard"; // Correct spelling
+import withGuard from "../utils/withGuard";
 import { UserProvider } from "../components/UserProfile/UserContext";
+
 function ProfilePage() {
   const outlet = useOutlet();
 
   return (
     <UserProvider>
-      <div className="flex flex-col min-h-screen">
-        <div className="py-5 my-5 ">
-          <div className="flex flex-col md:flex-row mx-2 my-4">
-            <div className="w-full md:w-1/4 px-2">
-              <UserSidebar className="border rounded" />
-            </div>
-            {outlet && (
-              <div className="w-full md:w-3/4 mx-4  max-md:my-2 max-md:mx-auto rounded  p-4">
-                <Outlet />
-              </div>
-            )}
+      <style>{`
+        .glass-panel {
+            background: rgba(32, 31, 31, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(195, 244, 0, 0.2);
+        }
+        .neon-glow-intense {
+            box-shadow: 0 0 30px rgba(195, 244, 0, 0.4);
+        }
+        .text-neon-glow {
+            text-shadow: 0 0 10px rgba(195, 244, 0, 0.5);
+        }
+      `}</style>
+      <div className="bg-background text-on-surface font-body-md text-body-md h-screen w-full flex overflow-hidden selection:bg-primary-container selection:text-on-primary">
+        <UserSidebar />
+        
+        <main className="flex-1 relative overflow-y-auto overflow-x-hidden pb-24 md:pb-0 pt-20">
+          <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg flex flex-col gap-xl">
+             {outlet && <Outlet />}
           </div>
-        </div>
+        </main>
       </div>
     </UserProvider>
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export default withGuard(ProfilePage);

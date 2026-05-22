@@ -1,124 +1,229 @@
-# 🎾 The Padel Court Booking System
+# ThePadelCourt
 
-Welcome to the future of padel court bookings! Our web application is designed to make your padel experience smoother than ever.
+ThePadelCourt is a full-stack padel court booking platform. Players can browse courts, reserve available slots, view their reservations, cancel bookings, and continue to Stripe Checkout. Court owners can manage their own courts from an owner dashboard.
 
-## 🌟 Features
+## Features
 
-- **👤 User Authentication**: Securely login and register with ease
-- **🏟️ Court Listings**: Browse our stunning courts with crisp images and detailed info
-- **📅 Smart Booking**: Pick your perfect time slot in just a few clicks
-- **🛠️ Admin Superpowers**: Manage courts and bookings like a pro
-- **📱 Responsive Design**: Book on-the-go, from any device
+- User registration and login with JWT cookies
+- Premium home page with featured court slider
+- Courts page powered by database data
+- Court detail and booking flow with live availability slots
+- User profile with reservations, cancel booking, and checkout actions
+- Owner dashboard for creating, editing, and deleting courts
+- Image upload for court creation through Cloudinary
+- Membership plans with Stripe test checkout
+- Booking checkout with Stripe test checkout
+- MongoDB-backed courts, users, and bookings
 
-## 🚀 Tech Stack
-
-We've built this system using cutting-edge technologies:
+## Tech Stack
 
 ### Frontend
 
-- ⚛️ React
-- 🎨 Tailwind CSS
-- 🌼 DaisyUI
-- 🛣️ React Router DOM
+- React 18
+- Vite
+- React Router
+- Tailwind CSS
+- Headless UI
+- Formik and Yup
+- Axios
+- Lucide React
+- React Hot Toast
 
 ### Backend
 
-- 🟢 Node.js
-- 🚂 Express.js
-- 🍃 MongoDB (or PostgreSQL)
-- 🔐 JWT for Authentication
+- Node.js
+- Express
+- MongoDB with Mongoose
+- JWT authentication
+- Cookie-based sessions
+- Multer file uploads
+- Cloudinary image storage
+- Stripe Checkout through the Stripe HTTP API
 
-## 🏁 Getting Started
+## Project Structure
 
-### Prerequisites
+```text
+ThePadelCourt/
+  Backend/
+    Controllers/
+    middlewares/
+    models/
+    routes/
+    index.js
+    seed.js
+  Frontend/
+    public/
+    src/
+      components/
+      Owner/
+      pages/
+      api/
+    index.html
+```
 
-- Node.js (v14 or higher)
-- MongoDB database
+## Requirements
 
-### Installation
+- Node.js 18 or newer
+- npm
+- MongoDB database connection string
+- Cloudinary account for court image uploads
+- Stripe test secret key for checkout flows
 
-1. **Clone the repository**
+## Environment Variables
 
-   ```bash
-   git clone https://github.com/FahdAzmy/ThePadelCourt.git
-   ```
+Create `Backend/.env`:
 
-2. **Navigate to the project directory**
+```env
+PORT=4000
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET_KEY=your_jwt_secret
 
-   ```bash
-   cd ThePadelCourt
-   ```
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
-3. **Install dependencies**
+CORS_ORIGIN=http://localhost:5173
+CLIENT_URL=http://localhost:5173
 
-   For the frontend:
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_CHECKOUT_CURRENCY=usd
+```
 
-   ```bash
-   cd frontend
-   npm install
-   ```
+Create `Frontend/.env`:
 
-   For the backend:
+```env
+VITE_APP_API_URL=http://localhost:4000/api
+```
 
-   ```bash
-   cd backend
-   npm install
-   ```
+## Installation
 
-4. **Set up Environment Variables**
+Install backend dependencies:
 
-   Create a `.env` file in the `backend` folder with:
+```bash
+cd Backend
+npm install
+```
 
-   ```env
-   MONGODB_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
-   ```
+Install frontend dependencies:
 
-5. **Run the Application**
+```bash
+cd ../Frontend
+npm install
+```
 
-   Start the backend server:
+## Running Locally
 
-   ```bash
-   cd backend
-   npm start
-   ```
+Start the backend:
 
-   Start the frontend development server:
+```bash
+cd Backend
+npm start
+```
 
-   ```bash
-   cd frontend
-   npm run dev
-   ```
+Start the frontend:
 
-   🎉 Your app is now running!
+```bash
+cd Frontend
+npm run dev
+```
 
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:5000
+Default local URLs:
 
-## 🎮 Usage
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:4000/api`
 
-1. **Create an Account**: Join our padel community
-2. **Log In**: Access your personalized dashboard
-3. **Explore Courts**: Find your perfect match
-4. **Book a Slot**: Secure your play time
-5. **Game On!**: Enjoy your padel session
+## Seed Courts
 
-## 🤝 Contributing
+The backend includes a seed script that adds sample courts to MongoDB.
 
-We love contributions! Here's how you can help:
+```bash
+cd Backend
+npm run seed
+```
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
+Run this after setting `MONGO_URL` in `Backend/.env`.
 
-## 📞 Contact
+## Main Routes
 
-Got questions? Reach out!
+### Frontend
 
-- Email: azmyfahd66@gmail.com
+- `/` - Home page
+- `/courts` - Browse all courts
+- `/court/:id` - Court booking page
+- `/memberships` - Membership plans
+- `/checkout/:planId` - Membership checkout redirect page
+- `/profile` - User profile
+- `/profile/reservations` - User bookings
+- `/ownerpage` - Owner court dashboard
+- `/login` - Login
+- `/register` - Register
 
----
+### Backend API
 
-Happy Padel Playing! 🏓
+- `POST /api/signup`
+- `POST /api/login`
+- `GET /api/getuser`
+- `GET /api/getcourts`
+- `GET /api/court/:id`
+- `POST /api/createbooking`
+- `POST /api/cancelbooking/:bookingId`
+- `POST /api/create-booking-checkout-session`
+- `GET /api/membership-plans`
+- `POST /api/create-membership-checkout-session`
+- `GET /api/getcourtsofowner`
+- `POST /api/createcourt`
+- `PUT /api/updatecourt`
+- `DELETE /api/deletecourt`
+
+## Stripe Test Checkout
+
+This project uses Stripe in test mode. Add a Stripe test secret key to `Backend/.env`:
+
+```env
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+```
+
+Booking checkout is started from the user reservations page. Membership checkout is started from the memberships page.
+
+## Owner Court Creation
+
+Owner accounts can create courts from `/ownerpage`. Court creation requires:
+
+- Court name
+- Location
+- Start hour
+- End hour
+- Price per hour
+- Court image
+
+Images are uploaded to Cloudinary, and court availability slots are generated automatically.
+
+## Useful Commands
+
+Backend:
+
+```bash
+npm start
+npm run seed
+```
+
+Frontend:
+
+```bash
+npm run dev
+npm run build
+npm run preview
+```
+
+## Notes
+
+- The backend must be running before the frontend can load courts, profile data, bookings, or checkout sessions.
+- The app uses cookies for authentication, so frontend and backend local URLs must be allowed by CORS.
+- Stripe checkout requires Node.js 18 or newer because the backend uses the built-in `fetch` API.
+- Cloudinary credentials are required to create courts with uploaded images.
+
+## Contact
+
+Project author: Fahd Azmy
+
+Email: `azmyfahd66@gmail.com`

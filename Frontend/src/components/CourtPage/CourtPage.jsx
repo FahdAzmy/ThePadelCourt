@@ -1,7 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
 import { getCourts } from "../../api/api";
-import withGuard from "../../utils/withGuard";
 import CourtCart from "../CourtCart";
 
 const CourtPage = () => {
@@ -19,12 +17,12 @@ const CourtPage = () => {
   const timeSlots = Array.from(
     new Set(
       allCourts.flatMap((court) =>
-        court.availability.flatMap((slot) =>
+        court.availability?.flatMap((slot) =>
           slot.timeSlots.map((timeSlot) => timeSlot.start)
-        )
+        ) || []
       )
     )
-  );
+  ).sort();
 
   // Fetch courts data on component mount
   useEffect(() => {
@@ -45,17 +43,17 @@ const CourtPage = () => {
     setFilteredCourts(
       allCourts.filter((court) => {
         const isZoneMatch = court.location
-          .toLowerCase()
+          ?.toLowerCase()
           .includes(searchZone.toLowerCase());
 
-        const isTimeMatch = court.availability.some((availability) =>
+        const isTimeMatch = court.availability?.some((availability) =>
           availability.timeSlots.some(
             (timeSlot) => timeSlot.start === searchTime
           )
         );
 
         // Compare the availability date with the selected search date
-        const isDateMatch = court.availability.some(
+        const isDateMatch = court.availability?.some(
           (availability) =>
             new Date(availability.date).toLocaleDateString() ===
             new Date(searchDate).toLocaleDateString()
@@ -77,68 +75,149 @@ const CourtPage = () => {
     }
   };
 
+  // Auto search when filters change to mimic modern SPA feel
+  useEffect(() => {
+    handleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchZone, searchDate, searchTime]);
+
   return (
-    <div className="pt-20 px-4 max-md:pr-0 mb-4 max-md:my-2 max-md:mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-8">Our Courts</h1>
+    <>
+      <style>{`
+        @keyframes bounce-x {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+        }
+        .hover-bounce-x:hover {
+            animation: bounce-x 0.5s ease-in-out infinite;
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(195, 244, 0, 0.2);
+        }
+        .neon-glow-hover:hover {
+            box-shadow: 0 0 30px rgba(195, 244, 0, 0.4);
+        }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .animated-bg {
+            background: radial-gradient(circle at 50% 100%, rgba(195, 244, 0, 0.05) 0%, rgba(10, 10, 10, 1) 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        select option {
+            background-color: #131313;
+            color: #ffffff;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+      `}</style>
 
-      {/* Search Filters */}
-      <div className="mb-6 mr-3 ">
-        <div className="flex gap-2 flex-col md:flex-row md:space-x-2 mb-4">
-          <select
-            className="border rounded-lg p-2 flex-1"
-            value={searchZone}
-            onChange={(e) => setSearchZone(e.target.value)}
-            onKeyDown={handleKeyDown}
-          >
-            <option value="">Select Zone</option>
-            {zones.map((zone, index) => (
-              <option key={index} value={zone}>
-                {zone}
-              </option>
-            ))}
-          </select>
-          <input
-            type="date"
-            className="border rounded-lg p-2 flex-1"
-            value={searchDate}
-            onChange={(e) => setSearchDate(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <select
-            className="border rounded-lg p-2 flex-1"
-            value={searchTime}
-            onChange={(e) => setSearchTime(e.target.value)}
-            onKeyDown={handleKeyDown}
-          >
-            <option value="">Select Time</option>
-            {timeSlots.map((time, index) => (
-              <option key={index} value={time}>
-                {time}
-              </option>
-            ))}
-          </select>
+      <div className="bg-background text-on-background min-h-screen flex flex-col animated-bg font-body-md overflow-x-hidden pt-24 pb-20 md:pb-10">
+        <main className="flex-grow px-margin-mobile md:px-margin-desktop py-lg max-w-[1440px] mx-auto w-full flex flex-col gap-xl">
+          {/* Page Header & Filters */}
+          <section className="flex flex-col gap-md">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+              <div>
+                <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">Available Courts</h1>
+                <p className="font-body-md text-body-md text-on-surface-variant">Find and book your next match.</p>
+              </div>
+              
+              {/* Search Bar */}
+              <div className="relative w-full md:w-96 group">
+                <div className="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary-fixed transition-colors">
+                  <span className="material-symbols-outlined hover-bounce-x">sports_tennis</span>
+                </div>
+                <input 
+                  className="w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-full py-sm pl-xl pr-md text-primary placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                  placeholder="Search by club or location..." 
+                  type="text"
+                  value={searchZone}
+                  onChange={(e) => setSearchZone(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+            </div>
 
-          <button
-            onClick={handleSearch}
-            className="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-          >
-            Search
-          </button>
-        </div>
+            {/* Filter Chips */}
+            <div className="flex flex-wrap overflow-x-auto no-scrollbar gap-sm pb-xs items-center">
+              <button 
+                onClick={() => { setSearchZone(""); setSearchDate(""); setSearchTime(""); }}
+                className={`${!searchZone && !searchDate && !searchTime ? 'bg-primary-fixed text-on-primary-fixed neon-glow hover:scale-105' : 'glass-panel text-primary hover:border-primary-fixed'} px-md py-base rounded-full font-label-md text-label-md whitespace-nowrap transition-transform`}
+              >
+                All Courts
+              </button>
+              
+              {/* Dynamic Zone Filter Dropdown */}
+              <div className="relative glass-panel rounded-full overflow-hidden hover:border-primary-fixed transition-colors flex items-center pr-2">
+                <span className="material-symbols-outlined pl-3 text-[18px] text-on-surface-variant">location_on</span>
+                <select
+                  className="bg-transparent text-primary py-base pl-2 pr-4 font-label-md text-label-md focus:outline-none cursor-pointer appearance-none"
+                  value={searchZone}
+                  onChange={(e) => setSearchZone(e.target.value)}
+                >
+                  <option value="">Zone</option>
+                  {zones.map((zone, index) => (
+                    <option key={index} value={zone}>{zone}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Dynamic Time Filter Dropdown */}
+              <div className="relative glass-panel rounded-full overflow-hidden hover:border-primary-fixed transition-colors flex items-center pr-2">
+                <span className="material-symbols-outlined pl-3 text-[18px] text-on-surface-variant">schedule</span>
+                <select
+                  className="bg-transparent text-primary py-base pl-2 pr-4 font-label-md text-label-md focus:outline-none cursor-pointer appearance-none"
+                  value={searchTime}
+                  onChange={(e) => setSearchTime(e.target.value)}
+                >
+                  <option value="">Time</option>
+                  {timeSlots.map((time, index) => (
+                    <option key={index} value={time}>{time}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Dynamic Date Filter Input */}
+              <div className="relative glass-panel rounded-full overflow-hidden hover:border-primary-fixed transition-colors flex items-center px-3">
+                <span className="material-symbols-outlined text-[18px] mr-2 text-on-surface-variant">calendar_month</span>
+                <input
+                  type="date"
+                  className="bg-transparent text-primary py-base font-label-md text-label-md focus:outline-none cursor-pointer"
+                  value={searchDate}
+                  onChange={(e) => setSearchDate(e.target.value)}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Courts Grid */}
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCourts.length > 0 ? (
+              filteredCourts.map((court) => (
+                <CourtCart court={court} key={court._id} />
+              ))
+            ) : (
+              <div className="col-span-full py-xl text-center glass-panel rounded-xl">
+                <span className="material-symbols-outlined text-display-lg text-on-surface-variant mb-4 opacity-50 block">sentiment_dissatisfied</span>
+                <h3 className="font-headline-md text-primary">No Courts Found</h3>
+                <p className="text-on-surface-variant mt-2">Try adjusting your filters or date selection.</p>
+              </div>
+            )}
+          </section>
+        </main>
       </div>
-
-      {/* Display courts based on the filtered results */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourts.length > 0 ? (
-          filteredCourts.map((court) => (
-            <CourtCart court={court} key={court._id} />
-          ))
-        ) : (
-          <p>No Courts</p>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
-export default withGuard(CourtPage);
+export default CourtPage;

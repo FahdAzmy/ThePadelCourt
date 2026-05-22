@@ -5,6 +5,62 @@ const Booking = require("../models/Booking.Model");
 const User = require("../models/User.Model");
 const { default: mongoose } = require("mongoose");
 
+function getClientUrl() {
+  return (
+    [process.env.CLIENT_URL, process.env.FRONTEND_URL, process.env.CORS_ORIGIN]
+      .map((url) => url?.trim())
+      .find(Boolean) || "http://localhost:5173"
+  ).replace(/\/$/, "");
+}
+
+const getUtcDateRange = (date) => {
+  const dateKey = typeof date === "string" ? date.slice(0, 10) : date;
+  const selectedDate = new Date(`${dateKey}T00:00:00.000Z`);
+
+  if (Number.isNaN(selectedDate.getTime())) {
+    return null;
+  }
+
+  const nextDate = new Date(selectedDate);
+  nextDate.setUTCDate(nextDate.getUTCDate() + 1);
+
+  return { selectedDate, nextDate };
+};
+
+const parseSlotTime = (time) => {
+  const match = String(time).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  let hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const period = match[3]?.toUpperCase();
+
+  if (period === "PM" && hours !== 12) {
+    hours += 12;
+  }
+
+  if (period === "AM" && hours === 12) {
+    hours = 0;
+  }
+
+  return hours * 60 + minutes;
+};
+
+const getSlotDurationHours = (timeSlot) => {
+  const start = parseSlotTime(timeSlot.start);
+  const end = parseSlotTime(timeSlot.end);
+
+  if (start === null || end === null) {
+    return 1;
+  }
+
+  const durationMinutes = end > start ? end - start : end + 24 * 60 - start;
+  return Math.max(durationMinutes / 60, 1);
+};
+
 /**
  * @desc Create a new booking for a court
  * @route POST /api/bookings
@@ -19,15 +75,27 @@ exports.CreateBooking = async (req, res, next) => {
     const { courtId, date, timeSlot } = req.body;
     const userId = req.user.userId; // Extracting user ID from the request
 
-    const bookingDate = new Date(date);
-    bookingDate.setUTCHours(22, 0, 0, 0); // Set the time to UTC 22:00
+    if (!courtId || !date || !timeSlot?.start || !timeSlot?.end) {
+      await session.abortTransaction();
+      return next(new appError("Court, date, and time slot are required", 400));
+    }
+
+    const dateRange = getUtcDateRange(date);
+
+    if (!dateRange) {
+      await session.abortTransaction();
+      return next(new appError("Invalid booking date", 400));
+    }
 
     // Check if the court is available for the requested date and time slot
     const court = await Court.findOne({
       _id: courtId,
       availability: {
         $elemMatch: {
-          date: bookingDate,
+          date: {
+            $gte: dateRange.selectedDate,
+            $lt: dateRange.nextDate,
+          },
           timeSlots: {
             $elemMatch: { start: timeSlot.start, end: timeSlot.end },
           },
@@ -37,29 +105,54 @@ exports.CreateBooking = async (req, res, next) => {
 
     // If the court is not available, send an error
     if (!court) {
+      await session.abortTransaction();
       return next(
-        new appError("This Court is not available at this time", 404)
+        new appError("This Court is not available at this time", 409)
+      );
+    }
+
+    const availabilityDay = court.availability.find(
+      (availability) =>
+        availability.date >= dateRange.selectedDate &&
+        availability.date < dateRange.nextDate
+    );
+
+    const bookedSlot = availabilityDay?.timeSlots.find(
+      (slot) => slot.start === timeSlot.start && slot.end === timeSlot.end
+    );
+
+    if (!availabilityDay || !bookedSlot) {
+      await session.abortTransaction();
+      return next(
+        new appError("This Court is not available at this time", 409)
       );
     }
 
     const booking = new Booking({
       courtId,
       userId,
-      date: bookingDate,
-      timeSlot,
+      date: availabilityDay.date,
+      timeSlot: {
+        start: bookedSlot.start,
+        end: bookedSlot.end,
+      },
     });
 
     await booking.save({ session }); // Save the booking to the database
 
     // Update court availability by removing the booked time slot
-    await Court.updateOne(
+    const updateResult = await Court.updateOne(
       {
         _id: courtId,
-        "availability.date": bookingDate,
+        "availability._id": availabilityDay._id,
       },
-      { $pull: { "availability.$.timeSlots": timeSlot } },
+      { $pull: { "availability.$.timeSlots": { _id: bookedSlot._id } } },
       { session }
     );
+
+    if (updateResult.modifiedCount === 0) {
+      throw new Error("Failed to update court availability");
+    }
 
     // Add the booking to the user's bookings
     await User.updateOne(
@@ -89,6 +182,94 @@ exports.CreateBooking = async (req, res, next) => {
     session.endSession(); // End the session
   }
 };
+
+exports.createBookingCheckoutSession = asyncHandler(async (req, res) => {
+  const { bookingId } = req.body;
+  const userId = req.user.userId;
+
+  if (!bookingId) {
+    return res.status(400).json({ message: "Booking id is required" });
+  }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({
+      message: "Stripe is not configured. Add STRIPE_SECRET_KEY to Backend/.env",
+    });
+  }
+
+  if (typeof fetch !== "function") {
+    return res.status(500).json({
+      message: "Stripe checkout requires Node 18+ fetch support.",
+    });
+  }
+
+  const booking = await Booking.findOne({
+    _id: bookingId,
+    userId,
+    status: { $ne: "cancelled" },
+  });
+
+  if (!booking) {
+    return res.status(404).json({ message: "Booking not found" });
+  }
+
+  const court = await Court.findById(booking.courtId);
+
+  if (!court) {
+    return res.status(404).json({ message: "Court not found" });
+  }
+
+  const clientUrl = getClientUrl();
+  const currency = process.env.STRIPE_CHECKOUT_CURRENCY || "usd";
+  const durationHours = getSlotDurationHours(booking.timeSlot);
+  const totalCents = Math.max(
+    Math.round(court.pricePerHour * durationHours * 100),
+    50
+  );
+  const dateLabel = booking.date.toISOString().slice(0, 10);
+  const body = new URLSearchParams();
+
+  body.append("mode", "payment");
+  body.append("payment_method_types[0]", "card");
+  body.append("line_items[0][quantity]", "1");
+  body.append("line_items[0][price_data][currency]", currency);
+  body.append("line_items[0][price_data][unit_amount]", String(totalCents));
+  body.append("line_items[0][price_data][product_data][name]", `${court.name} Booking`);
+  body.append(
+    "line_items[0][price_data][product_data][description]",
+    `${dateLabel}, ${booking.timeSlot.start} - ${booking.timeSlot.end}`
+  );
+  body.append("metadata[bookingId]", String(booking._id));
+  body.append("metadata[courtId]", String(court._id));
+  body.append("metadata[userId]", String(userId));
+  body.append(
+    "success_url",
+    `${clientUrl}/profile/reservations?checkout=success&booking=${booking._id}`
+  );
+  body.append(
+    "cancel_url",
+    `${clientUrl}/profile/reservations?checkout=cancel&booking=${booking._id}`
+  );
+
+  const stripeResponse = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+
+  const session = await stripeResponse.json();
+
+  if (!stripeResponse.ok) {
+    return res.status(stripeResponse.status).json({
+      message: session.error?.message || "Stripe checkout failed",
+    });
+  }
+
+  res.status(200).json({ url: session.url });
+});
 
 /**
  * @desc Confirm a pending booking
@@ -156,15 +337,18 @@ exports.cancelBooking = async (req, res, next) => {
 
   try {
     const { bookingId } = req.params; // Extracting booking ID from the request
+    const requestingUserId = req.user.userId;
 
     // Find the booking to cancel
     const booking = await Booking.findOne({
       _id: bookingId,
+      userId: requestingUserId,
     }).session(session);
 
     // If booking not found, return an error
     if (!booking) {
-      next(new appError("Booking not found", 404));
+      await session.abortTransaction();
+      return next(new appError("Booking not found", 404));
     }
 
     // Update booking status to cancelled
@@ -192,7 +376,7 @@ exports.cancelBooking = async (req, res, next) => {
     );
 
     // Ensure the court availability was updated successfully
-    if (updateResult.nModified === 0) {
+    if (updateResult.modifiedCount === 0) {
       throw new Error("Failed to update court availability");
     }
 

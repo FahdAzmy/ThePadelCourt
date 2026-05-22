@@ -160,7 +160,7 @@ exports.getCourtAvailability = asyncHandler(async (req, res, next) => {
  * @access Public
  */
 exports.getCourts = asyncHandler(async (req, res, next) => {
-  const courts = await Court.find();
+  const courts = await Court.find().sort({ updatedAt: -1, createdAt: -1 });
   res.status(200).json({ length: courts.length, message: "Courts", courts });
 });
 

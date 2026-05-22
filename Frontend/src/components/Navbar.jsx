@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { Menu, Search, UserCircle, X } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthContext";
 import Cookies from "js-cookie";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn, userRole } = useContext(AuthContext);
@@ -11,203 +13,92 @@ const Navbar = () => {
   function handleLogout() {
     Cookies.remove("token");
     setIsLoggedIn(false);
+    setIsMenuOpen(false);
     navigate("/login");
   }
 
-  return (
-    <nav className="bg-transparent p-4 fixed top-0 left-0 w-full z-10">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* Right side (PadelCourt) */}
-        <div className="text-3xl md:text-4xl font-extrabold text-lime-500">
-          <Link to={"/"}>PadelCourt</Link>
-        </div>
+  const navLinkClass = ({ isActive }) =>
+    `premium-nav-link ${isActive ? "active" : ""}`;
 
-        {/* Hamburger Menu for small screens */}
-        <div className="md:hidden">
+  return (
+    <>
+      <header className="premium-navbar">
+        <Link to="/" className="premium-brand" aria-label="ThePadelCourt home">
+          <Logo width={40} height={40} className="premium-logo" />
+          <span>ThePadelCourt</span>
+        </Link>
+
+        <nav className="premium-links" aria-label="Primary navigation">
+          <NavLink to="/" end className={navLinkClass}>Home</NavLink>
+          <NavLink to="/courts" className={navLinkClass}>Courts</NavLink>
+          <NavLink to="/memberships" className={navLinkClass}>Memberships</NavLink>
+          {isLoggedIn && userRole === "owner" && (
+            <NavLink to="/ownerpage" className={navLinkClass}>My Courts</NavLink>
+          )}
+        </nav>
+
+        <div className="premium-actions">
+          <button className="icon-button" aria-label="Search courts">
+            <Search size={19} strokeWidth={2.2} />
+          </button>
+          <Link className="icon-button" to={isLoggedIn ? "/profile" : "/login"} aria-label="Profile">
+            <UserCircle size={20} strokeWidth={2.2} />
+          </Link>
+          <Link className="book-now-button" to="/courts">Book Now</Link>
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-700 focus:outline-none"
+            className="menu-button"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-        
-        
-        {/* Center (Links) for medium and large screens */}
-        {isLoggedIn && (
-          <div className="hidden md:flex items-center space-x-6">
-            <NavLink
-        to="/"
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-      >
-              Home
-            </NavLink>
-            <NavLink
-        to="/courts"
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-      >
-              Courts
-            </NavLink>
-            <NavLink
-        to="/profile"
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-      >
-              Profile
-            </NavLink>
-            {userRole === "owner" && (
-               <NavLink
-               to="/ownerpage"
-               className={({ isActive }) =>
-                 `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-                   isActive ? "bg-gray-500" : ""
-                 }`
-               }
-             >
-                MyCourts
-              </NavLink>
+      </header>
+
+      {isMenuOpen && (
+        <div className="mobile-menu-panel">
+          <NavLink to="/" end className={navLinkClass} onClick={() => setIsMenuOpen(false)}>Home</NavLink>
+          <NavLink to="/courts" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>Courts</NavLink>
+          <NavLink to="/memberships" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>Memberships</NavLink>
+          {isLoggedIn && (
+            <NavLink to="/profile" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>Profile</NavLink>
+          )}
+          {isLoggedIn && userRole === "owner" && (
+            <NavLink to="/ownerpage" className={navLinkClass} onClick={() => setIsMenuOpen(false)}>My Courts</NavLink>
+          )}
+          <div className="mobile-menu-actions">
+            {isLoggedIn ? (
+              <button onClick={handleLogout}>Logout</button>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>Log In</Link>
+                <Link to="/register" onClick={() => setIsMenuOpen(false)}>Join Now</Link>
+              </>
             )}
           </div>
-        )}
-
-        {/* Left side (Login/Signup or Logout) for medium and large screens */}
-        <div className="hidden md:flex items-center space-x-4">
-          {isLoggedIn ? (
-            <button
-              className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="bg-gradient-to-r font-bold bg-rose-900 text-white px-4 py-2 rounded-lg shadow-lg hover:from-lime-900 hover:to-blue-900 transition duration-300 transform hover:scale-105"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="bg-gradient-to-r font-bold bg-sky-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-sky-600 transition duration-300 transform hover:scale-105"
-              >
-                Signup
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden flex flex-col items-center space-y-4 mt-4 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-          <NavLink
-        to="/"
-        onClick={() => setIsMenuOpen(false)}
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-            
-          >
-            Home
-          </NavLink>
-          <NavLink
-        to="courts"
-        onClick={() => setIsMenuOpen(false)}
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-            
-          >
-            Courts
-          </NavLink>
-          <NavLink
-        to="profile/settings"
-        onClick={() => setIsMenuOpen(false)}
-        className={({ isActive }) =>
-          `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-            isActive ? "bg-gray-500" : ""
-          }`
-        }
-            
-          >
-            Profile
-          </NavLink>
-
-          {userRole === "owner" && (
-             <NavLink
-             to="/ownerpage"
-             onClick={() => setIsMenuOpen(false)}
-             className={({ isActive }) =>
-               `flex items-center  text-lime-300 text-lg font-bold hover:text-green-600 transition duration-300 p-2 rounded-lg hover:bg-gray-300 ${
-                 isActive ? "bg-gray-500" : ""
-               }`
-             }
-                 
-               >
-              MyCourts
-            </NavLink>
-          )}
-
-          {isLoggedIn ? (
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-600 transition duration-300"
-              onClick={() => {
-                handleLogout();
-                setIsMenuOpen(false);
-              }}
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="bg-blue-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-600 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="bg-green-500 text-white px-4 py-2 rounded-full shadow-md hover:bg-green-600 transition duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Signup
-              </Link>
-            </>
-          )}
         </div>
       )}
-    </nav>
+
+      <nav className="mobile-bottom-nav" aria-label="Mobile quick navigation">
+        <NavLink to="/courts">
+          <span className="material-symbols-outlined">sports_tennis</span>
+          <span>Explore</span>
+        </NavLink>
+        <NavLink to={isLoggedIn ? "/profile/reservations" : "/login"}>
+          <span className="material-symbols-outlined">event_available</span>
+          <span>Bookings</span>
+        </NavLink>
+        <a href="/#stats">
+          <span className="material-symbols-outlined">leaderboard</span>
+          <span>Stats</span>
+        </a>
+        <NavLink to={isLoggedIn ? "/profile" : "/login"}>
+          <span className="material-symbols-outlined">person</span>
+          <span>Profile</span>
+        </NavLink>
+      </nav>
+    </>
   );
 };
 

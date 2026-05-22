@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const courtRoutes = require("./routes/Courts.Route");
 const bookingRoutes = require("./routes/Booking.Route");
+const membershipRoutes = require("./routes/Membership.Route");
 const route = require("./Routs/Rout.js");
 const userRoutes = require("./routes/User.Route.js");
 const ConnectToDb = require("./db/ConeectedToDb");
@@ -15,9 +16,14 @@ const {
 const app = express();
 app.use(
   cors({
-    origin:
-      process.env.CORS_ORIGIN ||
-      "https://padelcourt-m907iusj9-fahd-azmys-projects.vercel.app",
+    origin: [
+      process.env.CORS_ORIGIN || "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://localhost:5174",
+      "http://127.0.0.1:5174",
+      "http://localhost:5175",
+      "http://127.0.0.1:5175"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -31,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", authRoutes);
 app.use("/api", courtRoutes);
 app.use("/api", bookingRoutes);
+app.use("/api", membershipRoutes);
 app.use("/api", route);
 app.use("/api", userRoutes);
 
