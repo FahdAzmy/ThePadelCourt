@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
