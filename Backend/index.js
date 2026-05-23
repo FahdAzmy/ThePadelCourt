@@ -41,13 +41,26 @@ app.use("/api", membershipRoutes);
 app.use("/api", route);
 app.use("/api", userRoutes);
 
+// Health check and root endpoints
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "System is healthy" });
+});
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to The Padel Court API" });
+});
+
 //error Handler
 app.use(NotFoundRoutes);
 app.use(GlobalErrorHandler);
 
 // Connect To DB
-const Port = process.env.PORT || 4000;
-app.listen(Port, () => {
-  ConnectToDb();
-  console.log("Server Listening on Port", Port);
-});
+ConnectToDb();
+
+if (process.env.NODE_ENV !== "production") {
+  const Port = process.env.PORT || 4000;
+  app.listen(Port, () => {
+    console.log("Server Listening on Port", Port);
+  });
+}
+
+module.exports = app;
